@@ -1,0 +1,14 @@
+{
+  "name": "build-stats",
+  "version": "0.0.0",
+  "description": "Calculate build stats",
+  "main": "index.js",
+  "author": "James Kyle <me@thejameskyle.com>",
+  "license": "MIT",
+  "dependencies": {
+    "got": "^8.0.1",
+    "lodash.groupby": "^4.6.0",
+    "meow": "^4.0.0",
+    "p-limit": "^1.2.0"
+  }
+}
