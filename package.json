@@ -6,7 +6,9 @@
   "author": "James Kyle <me@thejameskyle.com>",
   "license": "MIT",
   "dependencies": {
+    "chalk": "^2.3.0",
     "got": "^8.0.1",
+    "left-pad": "^1.2.0",
     "lodash.groupby": "^4.6.0",
     "meow": "^4.0.0",
     "p-limit": "^1.2.0"

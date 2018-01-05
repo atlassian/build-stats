@@ -3,12 +3,17 @@
 const { getBuildDir } = require('./util');
 const fs = require('fs');
 const path = require('path');
+const chalk = require('chalk');
 const { promisify } = require('util');
 const groupBy = require('lodash.groupby');
+const leftPad = require('left-pad');
 
 const mkdir = promisify(fs.mkdir);
 const readDir = promisify(fs.readdir);
 const readFile = promisify(fs.readFile);
+
+const GRAPH_MAX_LENGTH = 15;
+const TWENTY_MINS_IN_SECS = 60 * 20;
 
 function daysToMs(days) {
   return 1000 * 60 * 60 * 24 * days;
@@ -45,8 +50,32 @@ function calculateGroup(builds) {
   };
 }
 
+function getRange(data) {
+  let max = TWENTY_MINS_IN_SECS;
+  let min = TWENTY_MINS_IN_SECS;
+
+  data.forEach(build => {
+    if (build.SUCCESSFUL) {
+      max = Math.max(max, build.SUCCESSFUL.buildDurationMean);
+      min = Math.min(min, build.SUCCESSFUL.buildDurationMean);
+    }
+  });
+
+  return {
+    min,
+    max
+  }
+}
+
+function getBar(data, range) {
+  let distance = range.max - range.min;
+  let unit = GRAPH_MAX_LENGTH / distance;
+  let length = Math.floor((data - range.min) * unit);
+  return '█' + new Array(length).join('█');
+}
+
 async function calculate({
-    cwd,
+  cwd,
   host,
   user,
   repo,
@@ -129,7 +158,19 @@ async function calculate({
   // console.log(ranges[0].filter(build => build.result === 'SUCCESSFUL').map(build => ({ id: build.id, duration: build.duration / 60 })));
   // console.log(data.ranges[0]);
   // console.log(data.ranges.slice(0, 2));
-  console.log(data.ranges.map(range => range.SUCCESSFUL && range.SUCCESSFUL.buildDurationMean / 60));
+
+  //console.log(getRange(data.ranges));
+  let t = getRange(data.ranges);
+  data.ranges.map(range => range.SUCCESSFUL &&
+    console.log(
+      `Mean build Time: ${chalk.green(leftPad( (range.SUCCESSFUL.buildDurationMean / 60).toFixed(2), 5, '0' ) )} mins ${getBar(range.SUCCESSFUL.buildDurationMean, t)}`
+    )
+  );
+
+
+  // console.log(
+  //   data.ranges.map(range => range.SUCCESSFUL && range.SUCCESSFUL.buildDurationMean / 60)
+  // );
 
   // console.log(host, user, repo, branch, period, last);
 }
