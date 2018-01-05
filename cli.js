@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 const meow = require('meow');
-const { download, calculate } = require('./');
+const calculate = require('./commands/calculate');
+const download = require('./commands/download');
 
 async function main(argv) {
   const cli = meow({
@@ -16,8 +17,8 @@ async function main(argv) {
 
       Options
         --branch [name]  (stats) Which branch to display stats for (Default: *)
-        --period [days]  (stats) How many days in a time period to calculate the means for (Default: 30)
-        --last [count]   (stats) How many periods to caculate back to (Default: 12)
+        --period [days]  (stats) How many days in a time period to calculate the means for (Default: 1)
+        --last [count]   (stats) How many periods to calculate back to (Default: 30)
 
       Examples
         Download pipelines builds history to .data folder:
