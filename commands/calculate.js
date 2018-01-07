@@ -26,10 +26,10 @@ function withInDays(a, b, days) {
   return aTime - bTime < daysToMs(days);
 }
 
-function withinLast(days, build) {
+function withinLast(days, period, build) {
   const now = Date.now();
   let buildDateTime = +new Date(build.createdOn);
-  let daysInMs = daysToMs(days);
+  let daysInMs = daysToMs(days * period);
 
   return buildDateTime > now - daysInMs;
 }
@@ -71,7 +71,11 @@ function getBar(data, range) {
   let distance = range.max - range.min;
   let unit = GRAPH_MAX_LENGTH / distance;
   let length = Math.floor((data - range.min) * unit);
-  return '█' + new Array(length).join('█');
+  if (length > GRAPH_MAX_LENGTH / 2) {
+    return `${chalk.red('█' + new Array(length).join('█'))}`;
+  }
+
+  return `${chalk.green('█' + new Array(length).join('█'))}`;
 }
 
 async function calculate({
@@ -124,7 +128,7 @@ async function calculate({
     let range = [];
     let first = queue.shift();
 
-    if (!withinLast(last, first)) {
+    if (!withinLast(last, period, first)) {
       break;
     }
 
