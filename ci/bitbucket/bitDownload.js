@@ -7,6 +7,18 @@ const { getBuildDir } = require('../../commands/util');
 const writeFile = promisify(fs.writeFile);
 const stat = promisify(fs.stat);
 
+function toStandardBuildConfig(build) {
+  return {
+    id: build.build_number,
+    uuid: build.uuid,
+    createdOn: build.created_on,
+    duration: build.duration_in_seconds,
+    result: build.state.result.name,
+    refType: build.target.ref_type,
+    refName: build.target.ref_name
+  };
+}
+
 async function exists(filePath) {
   try {
     await stat(filePath);
@@ -39,9 +51,11 @@ async function fetchBitbucketPipelines(buildsDir, user, repo) {
         break outer;
       }
 
-      if (build.state.name !== 'COMPLETED') {
+      if (build.state.name !== 'COMPLETED' || build.trigger.name === 'SCHEDULE') {
         continue;
       }
+
+      build = toStandardBuildConfig(build);
 
       await writeFile(filePath, JSON.stringify(build));
     }

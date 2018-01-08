@@ -7,6 +7,23 @@ const { getBuildDir } = require("../../commands/util");
 const writeFile = promisify(fs.writeFile);
 const stat = promisify(fs.stat);
 
+const RESULT_TO_STATUS = {
+  '0': 'SUCCESSFUL',
+  '1': 'FAILED'
+}
+
+function toStandardBuildConfig(build) {
+  return {
+    id: build.number,
+    uuid: build.id,
+    createdOn: build.started_at,
+    duration: build.duration,
+    result: RESULT_TO_STATUS[build.result] || 'STOPPED',
+    refType: build.event_type,
+    refName: build.branch
+  };
+}
+
 async function exists(filePath) {
   try {
     await stat(filePath);
@@ -27,7 +44,7 @@ async function fetchPipelines(buildsDir, user, repo) {
   outer: do {
     let res = await got(
       `https://api.travis-ci.org/repos/${user}/${repo}/builds?after_number${
-        next !== 0 ? "=" + next : ""
+      next !== 0 ? "=" + next : ""
       }`
     );
 
@@ -52,10 +69,12 @@ async function fetchPipelines(buildsDir, user, repo) {
         continue;
       }
 
+      build = toStandardBuildConfig(build);
+
       await writeFile(filePath, JSON.stringify(build));
     }
 
-    if ( fetchedTillBuild - 25 < 1) {
+    if (fetchedTillBuild - 25 < 1) {
       next = 0;
     } else {
       next = fetchedTillBuild - 25;
