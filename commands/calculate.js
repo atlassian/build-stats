@@ -2,11 +2,10 @@
 const fs = require("fs");
 const path = require("path");
 const chalk = require("chalk");
+const Table = require('cli-table');
+const leftPad = require("left-pad");
 const { promisify } = require("util");
 const groupBy = require("lodash.groupby");
-const leftPad = require("left-pad");
-const Table = require('cli-table');
-const hyperlinker = require('hyperlinker');
 
 const { daysToMs, getBuildDir, withInDays, withinLast } = require("./util");
 
