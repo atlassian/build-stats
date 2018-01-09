@@ -1,6 +1,6 @@
 "use strict";
 const { getBuildDir } = require("./util");
-const bitbucketDownload = require("../ci/bitbucket/bitDownload");
+const bitbucketDownload = require("../ci/bitbucket/bitbucketDownload");
 const fetchTravisPipelines = require("../ci/travis/travisDownload");
 
 async function download({ cwd, host, user, repo }) {
