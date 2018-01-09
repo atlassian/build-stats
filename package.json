@@ -3,8 +3,27 @@
   "version": "0.0.0",
   "description": "Calculate build stats",
   "main": "index.js",
-  "author": "James Kyle <me@thejameskyle.com>",
+  "bin": "cli.js",
+  "author": "Ajay Narain Mathur <ajaynarainmathur@gmail.com>",
   "license": "MIT",
+  "keywords": [
+    "build",
+    "stats",
+    "ci",
+    "continous integration",
+    "perf"
+  ],
+  "file": [
+    "cli.js",
+    "index.js",
+    "lib"
+  ],
+  "engines": {
+    "node": ">=8.5.0"
+  },
+  "scripts": {
+    "test": "ava"
+  },
   "dependencies": {
     "chalk": "^2.3.0",
     "cli-table": "^0.3.1",
@@ -13,5 +32,10 @@
     "lodash.groupby": "^4.6.0",
     "meow": "^4.0.0",
     "p-limit": "^1.2.0"
+  },
+  "devDependencies": {
+    "ava": "^0.24.0",
+    "jest-fixtures": "^0.6.0",
+    "sinon": "^4.1.4"
   }
 }
