@@ -13,7 +13,7 @@
     "continous integration",
     "perf"
   ],
-  "file": [
+  "files": [
     "cli.js",
     "index.js",
     "lib"
