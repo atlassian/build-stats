@@ -1,6 +1,6 @@
 {
   "name": "build-stats",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Calculate build stats",
   "main": "index.js",
   "bin": "cli.js",
