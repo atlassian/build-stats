@@ -3,53 +3,38 @@ const fs = require("fs");
 const path = require("path");
 const chalk = require("chalk");
 const { promisify } = require("util");
-const { getBuildDir } = require("./util");
 const groupBy = require("lodash.groupby");
 const leftPad = require("left-pad");
 const Table = require('cli-table');
 const hyperlinker = require('hyperlinker');
+
+const { daysToMs, getBuildDir, withInDays, withinLast } = require("./util");
 
 const readDir = promisify(fs.readdir);
 const readFile = promisify(fs.readFile);
 const GRAPH_MAX_LENGTH = 15;
 const TWENTY_MINS_IN_SECS = 60 * 20;
 
-function daysToMs(days) {
-  return 1000 * 60 * 60 * 24 * days;
-}
-
-function withInDays(a, b, days) {
-  let aTime = +new Date(a.createdOn);
-  let bTime = +new Date(b.createdOn);
-
-  return aTime - bTime < daysToMs(days);
-}
-
-function withinLast(days, period, build) {
-  const now = Date.now();
-  let buildDateTime = +new Date(build.createdOn);
-  let daysInMs = daysToMs(days * period);
-
-  return buildDateTime > now - daysInMs;
-}
-
 function getPercentileMean(dataSet, percentile) {
+  let total = 0;
   let sortedDataSet = dataSet.sort((a, b) => a - b);
   let dataSetLength = sortedDataSet.length;
   let elementToPick = Math.floor((percentile / 100) * dataSetLength);
+
+  // guard in case there is only one build in that period
+  elementToPick = Math.max(1, elementToPick);
   let newDataSet = sortedDataSet.slice(0, elementToPick);
-  let total = 0;
   newDataSet.forEach(data => { total += data });
 
   return total / newDataSet.length;
 }
 
 function calculateGroup(builds) {
-  let totalBuilds = builds.length;
   let totalDuration = 0;
   let longestBuild = {
     duration: 0,
-  }
+  };
+  let totalBuilds = builds.length;
 
   for (let build of builds) {
     totalDuration += build.duration;
@@ -60,6 +45,7 @@ function calculateGroup(builds) {
   }
 
   let buildDurationMean = totalDuration / totalBuilds;
+  let buildPercentileMean = getPercentileMean(builds.map(build => build.duration), 95);
 
   let startDate = new Date(builds[totalBuilds - 1].createdOn);
   let endDate = new Date(builds[0].createdOn);
@@ -69,14 +55,12 @@ function calculateGroup(builds) {
     `${leftPad(endDate.getDate(), 2, '0')}/${leftPad(endDate.getMonth() + 1, 2, '0')}/${endDate.getFullYear()}`
   ];
 
-  let percentile = getPercentileMean(builds.map(build => build.duration), 95);
-
   return {
-    totalBuilds,
-    buildDurationMean,
-    longestBuild,
     dateRange,
-    percentile
+    buildDurationMean,
+    buildPercentileMean,
+    longestBuild,
+    totalBuilds
   };
 }
 
@@ -86,8 +70,8 @@ function getRange(data) {
 
   data.forEach(build => {
     if (build.SUCCESSFUL) {
-      max = Math.max(max, build.SUCCESSFUL.buildDurationMean);
-      min = Math.min(min, build.SUCCESSFUL.buildDurationMean);
+      max = Math.max(max, build.SUCCESSFUL.buildPercentileMean);
+      min = Math.min(min, build.SUCCESSFUL.buildPercentileMean);
     }
   });
 
@@ -100,7 +84,7 @@ function getRange(data) {
 function getBar(data, range) {
   let distance = range.max - range.min;
   let unit = GRAPH_MAX_LENGTH / distance;
-  let length = Math.floor((data - range.min) * unit);
+  let length = Math.ceil((data - range.min) * unit);
   if (length > GRAPH_MAX_LENGTH / 2) {
     return `${chalk.red("█" + new Array(length).join("█"))}`;
   }
@@ -171,23 +155,21 @@ async function calculate({
 
   let barRange = getRange(data.ranges);
 
-  // instantiate 
   var table = new Table({
-    head: ['Date Range (DD/MM/YYY)', 'Total Builds', 'Mean', 'Mean (95%)', 'Longest', '']
-    , colWidths: [30, 15, 15, 15, 20, 30]
+    head: ['', 'Date Range (DD/MM/YYY)', 'Total Builds', 'Mean', 'Mean (95%)', 'Longest', '']
+    , colWidths: [5, 30, 15, 15, 15, 20, 30]
   });
 
-  // console.log(data.ranges[0]);
-
-  data.ranges.map(range =>
+  data.ranges.map((range, index) =>
     range.SUCCESSFUL &&
     table.push([
-      range.SUCCESSFUL.dateRange.join('-'),
+      index,
+      range.SUCCESSFUL.dateRange.join(' - '),
       range.SUCCESSFUL.totalBuilds,
       `${leftPad((range.SUCCESSFUL.buildDurationMean / 60).toFixed(2), 5, "0")} min`,
-      `${leftPad((range.SUCCESSFUL.percentile / 60).toFixed(2), 5, "0")} min`,
-      `${leftPad((range.SUCCESSFUL.longestBuild.duration / 60).toFixed(2), 5, "0")} min #${range.SUCCESSFUL.longestBuild.buildNum}`,
-      getBar(range.SUCCESSFUL.buildDurationMean, barRange)
+      `${leftPad((range.SUCCESSFUL.buildPercentileMean / 60).toFixed(2), 5, "0")} min`,
+      `${leftPad((range.SUCCESSFUL.longestBuild.duration / 60).toFixed(2), 5, "0")} min (#${range.SUCCESSFUL.longestBuild.buildNum})`,
+      getBar(range.SUCCESSFUL.buildPercentileMean, barRange)
     ])
   );
 
