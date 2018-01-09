@@ -2,7 +2,7 @@
 
 > Get the stats of your pipeline.
 
-![preview](preview.png)
+![preview](https://raw.githubusercontent.com/ajaymathur/build-stats/master/preview.png)
 
 ## Install
 
