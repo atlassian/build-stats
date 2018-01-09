@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 const meow = require('meow');
-const calculate = require('./commands/calculate');
-const download = require('./commands/download');
+const { calculate, download } = require('./');
 
 async function main(argv) {
   const cli = meow({
