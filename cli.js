@@ -8,7 +8,7 @@ async function main(argv) {
     argv,
     help: `
       Usage
-        $ build-stats [user]/[repo] [command] <...args> <...opts>
+        $ build-stats <service>:<user>/<repo> <command> [...opts]
 
       Commands
         download         Download history for a repository
@@ -19,18 +19,22 @@ async function main(argv) {
         --period [days]  (stats) How many days in a time period to calculate the means for (Default: 1)
         --last [count]   (stats) How many periods to calculate back to (Default: 30)
 
+      Services
+        - bitbucket      Bitbucket Pipelines
+        - travis         Travis CI
+
       Examples
         Download pipelines builds history to .data folder:
-        $ build-stats bitbucket:user/repo download
+        $ build-stats travis:boltpkg/bolt download
 
         Calculate monthly average build time and success rate of a repo over the last year
-        $ build-stats bitbucket:user/repo calculate
+        $ build-stats travis:boltpkg/bolt calculate
 
         Calculate daily average build time and success rate of a repo over the last month
-        $ build-stats bitbucket:user/repo calculate --period 1 --last 30
+        $ build-stats travis:boltpkg/bolt calculate --period 1 --last 30
 
         Calculate daily average build time and success rate of the master branch of a repo over the last 90 days
-        $ build-stats bitbucket:user/repo calculate --branch master --period 1 --last 90
+        $ build-stats travis:boltpkg/bolt calculate --branch master --period 1 --last 90
     `
   });
 
