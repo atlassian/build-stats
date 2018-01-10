@@ -27,11 +27,14 @@
   "dependencies": {
     "chalk": "^2.3.0",
     "cli-table": "^0.3.1",
+    "date-fns": "^1.29.0",
+    "default-pager": "^1.1.0",
     "got": "^8.0.1",
     "left-pad": "^1.2.0",
     "lodash.groupby": "^4.6.0",
     "meow": "^4.0.0",
-    "p-limit": "^1.2.0"
+    "p-limit": "^1.2.0",
+    "string-to-stream": "^1.1.0"
   },
   "devDependencies": {
     "ava": "^0.24.0",
