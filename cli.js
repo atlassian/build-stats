@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 const meow = require('meow');
-const { calculate, download } = require('./');
+const { calculate, download, history } = require('./');
 
 async function main(argv) {
   const cli = meow({
@@ -13,11 +13,13 @@ async function main(argv) {
       Commands
         download         Download history for a repository
         calculate        Calculate average build time and success rates over time
+        history          List individual builds
 
       Options
-        --branch [name]  (stats) Which branch to display stats for (Default: *)
-        --period [days]  (stats) How many days in a time period to calculate the means for (Default: 1)
-        --last [count]   (stats) How many periods to calculate back to (Default: 30)
+        --branch [name]  (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
+        --result [name]  (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
+        --period [days]  (calculate) How many days in a time period to calculate the means for (Default: 1)
+        --last [count]   (calculate) How many periods to calculate back to (Default: 30)
 
       Services
         - bitbucket      Bitbucket Pipelines
@@ -35,6 +37,12 @@ async function main(argv) {
 
         Calculate daily average build time and success rate of the master branch of a repo over the last 90 days
         $ build-stats travis:boltpkg/bolt calculate --branch master --period 1 --last 90
+
+        Display build history
+        $ build-stats travis:boltpkg/bolt history
+
+        Display build history for master branch for builds that were either successul or failed
+        $ build-stats travis:boltpkg/bolt history --branch master --status SUCCESSFUL,FAILED
     `
   });
 
@@ -67,8 +75,18 @@ async function main(argv) {
       user,
       repo,
       branch: flags.branch,
+      result: flags.result,
       period: flags.period ? parseInt(flags.period, 10) : undefined,
       last: flags.last ? parseInt(flags.last, 10) : undefined,
+    });
+  } else if (command === 'history') {
+    await history({
+      cwd,
+      host,
+      user,
+      repo,
+      branch: flags.branch,
+      result: flags.result,
     });
   } else {
     throw new Error(`Unknown command "${command}", should be "download" or "calculate"`);
