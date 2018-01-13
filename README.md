@@ -1,8 +1,11 @@
-# build-stats
+<p style="text-align:center;font-size:32px;lint-height: 32px;">
+<img src="./assets/logo.png" style="display: inline-block;height: 32px;">
+<span>build-stats</span>
+</p>
 
 > Get the stats of your pipeline.
 
-![preview](https://raw.githubusercontent.com/ajaymathur/build-stats/master/preview.png)
+![preview](https://raw.githubusercontent.com/ajaymathur/build-stats/master/assets/preview.png)
 
 ## Install
 
