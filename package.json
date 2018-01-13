@@ -13,6 +13,10 @@
     "continous integration",
     "perf"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ajaymathur/build-stats.git"
+  },
   "files": [
     "cli.js",
     "index.js",
