@@ -42,7 +42,7 @@ async function main(argv) {
         $ build-stats travis:boltpkg/bolt history
 
         Display build history for master branch for builds that were either successul or failed
-        $ build-stats travis:boltpkg/bolt history --branch master --status SUCCESSFUL,FAILED
+        $ build-stats travis:boltpkg/bolt history --branch master --result SUCCESSFUL,FAILED
     `
   });
 

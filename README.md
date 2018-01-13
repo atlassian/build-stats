@@ -40,6 +40,18 @@ Calculate daily average build time and success rate of the master branch of a re
 $ build-stats travis:boltpkg/bolt calculate --branch master --period 1 --last 90
 ```
 
+Display build history:
+
+```sh
+$ build-stats travis:boltpkg/bolt history
+```
+
+Display build history for master branch for builds that were either successul or failed:
+
+```sh
+$ build-stats travis:boltpkg/bolt history --branch master --result SUCCESSFUL,FAILED
+```
+
 ## Usage
 
 ```sh
@@ -62,3 +74,9 @@ Calculate the mean and see the stats of build history
 - `--period <days>`: How many days in a time period to calculate the build stats for (**Default: 1**)
 - `--last <days>`: How many periods to calculate back to (**Default: 30**)
 
+### `history`
+
+Display build history
+
+- `--branch <branchName>`: Name of the branch to show history for (**Defualt: (*)**)
+- `--result <SUCCESSFUL | FAILED | STOPPPED | any>`: Result of the branch to show history for. We can display history for multiple results by seperating them with a comma(,). To see history only for SUCCESSFUL and FAILED build we can use `--result SUCCESSFUL,FAILED` (**Default: (*)**)
