@@ -72,7 +72,7 @@ Calculate the mean and see the stats of build history
 - `--period <days>`: How many days in a time period to calculate the build stats for (**Default: 1**)
 - `--last <days>`: How many periods to calculate back to (**Default: 30**)
 
-### `history`
+#### `history`
 
 Display build history
 
