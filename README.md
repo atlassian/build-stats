@@ -1,4 +1,6 @@
-<img alt="logo" src="./assets/logo.png" height="32"/>
+<img alt="logo" src="./assets/logo.png"/> 
+
+---
 
 # build-stats
 
