@@ -1,7 +1,6 @@
-<p style="text-align:center;font-size:32px;lint-height: 32px;">
-<img src="./assets/logo.png" style="display: inline-block;height: 32px;">
-<span>build-stats</span>
-</p>
+<img alt="logo" src="./assets/logo.png" height="32"/>
+
+# build-stats
 
 > Get the stats of your pipeline.
 
