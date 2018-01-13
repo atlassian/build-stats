@@ -79,4 +79,4 @@ Calculate the mean and see the stats of build history
 Display build history
 
 - `--branch <branchName>`: Name of the branch to show history for (**Defualt: (*)**)
-- `--result <SUCCESSFUL | FAILED | STOPPPED | any>`: Result of the branch to show history for. We can display history for multiple results by seperating them with a comma(,). To see history only for SUCCESSFUL and FAILED build we can use `--result SUCCESSFUL,FAILED` (**Default: (*)**)
+- `--result <SUCCESSFUL | FAILED | STOPPPED | any>`: Result of the branch to show history for. We can display history for multiple results by seperating them with a comma(,). To see history for builds that were either successful or failed use `--result SUCCESSFUL,FAILED` (**Default: (*)**)
