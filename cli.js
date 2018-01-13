@@ -67,6 +67,7 @@ async function main(argv) {
       host,
       user,
       repo,
+      auth: flags.auth || undefined
     });
   } else if (command === 'calculate') {
     await calculate({
