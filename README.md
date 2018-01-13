@@ -1,8 +1,6 @@
-<img alt="logo" src="./assets/logo.png"/> 
+![build-stats](https://raw.githubusercontent.com/ajaymathur/build-stats/master/assets/logo.png)
 
 ---
-
-# build-stats
 
 > Get the stats of your pipeline.
 
