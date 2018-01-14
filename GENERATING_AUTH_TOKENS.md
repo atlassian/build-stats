@@ -12,7 +12,7 @@ Make sure you have 2FA activated on your account.
 
 2. Go to app password and create password
 
-<img alt="App password" src="./assets/bitbucket-app-password-2.png" width="400">
+<img alt="App password" src="./assets/bitbucket-app-password-2.png" width="800">
 
 3. Use your bitbucket username and this app password for authentication.
 
