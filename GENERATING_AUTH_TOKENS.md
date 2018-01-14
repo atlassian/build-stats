@@ -16,7 +16,7 @@ Make sure you have 2FA activated on your account.
 
 3. Use your bitbucket username and this app password for authentication.
 
-`<BitbucketUserName>:<AppPassword>
+`<BitbucketUserName>:<AppPassword>`
 
 #### Tips:
 
