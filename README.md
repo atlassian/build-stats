@@ -65,6 +65,8 @@ build-stats <service>:<user>/<repo> <command> [...options]
 
 Download the build history into a local `.data` cache.
 
+- `--auth <token>`: Authentication token to access builds on private repository. Please read [GENERATING_AUTH_TOKENS.md](GENERATING_AUTH_TOKENS.md) to see how to generate authentication token.
+
 #### `calculate`
 
 Calculate the mean and see the stats of build history

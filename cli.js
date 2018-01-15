@@ -16,10 +16,11 @@ async function main(argv) {
         history          List individual builds
 
       Options
-        --branch [name]  (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
-        --result [name]  (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
-        --period [days]  (calculate) How many days in a time period to calculate the means for (Default: 1)
-        --last [count]   (calculate) How many periods to calculate back to (Default: 30)
+        --auth   [authentication]  (download) Authentication to access private repo
+        --branch [name]            (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
+        --result [name]            (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
+        --period [days]            (calculate) How many days in a time period to calculate the means for (Default: 1)
+        --last   [count]           (calculate) How many periods to calculate back to (Default: 30)
 
       Services
         - bitbucket      Bitbucket Pipelines
@@ -28,6 +29,9 @@ async function main(argv) {
       Examples
         Download pipelines builds history to .data folder:
         $ build-stats travis:boltpkg/bolt download
+
+        Download pipelines builds history to .data folder for private repository:
+        $ build-stats travis:boltpkg/bolt download --auth <token>
 
         Calculate monthly average build time and success rate of a repo over the last year
         $ build-stats travis:boltpkg/bolt calculate
@@ -67,6 +71,7 @@ async function main(argv) {
       host,
       user,
       repo,
+      auth: flags.auth
     });
   } else if (command === 'calculate') {
     await calculate({
