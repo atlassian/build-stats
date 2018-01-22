@@ -83,6 +83,7 @@ async function main(argv) {
       result: flags.result,
       period: flags.period ? parseInt(flags.period, 10) : undefined,
       last: flags.last ? parseInt(flags.last, 10) : undefined,
+      json: flags.json
     });
   } else if (command === 'history') {
     await history({
@@ -92,6 +93,7 @@ async function main(argv) {
       repo,
       branch: flags.branch,
       result: flags.result,
+      json: flags.json
     });
   } else {
     throw new Error(`Unknown command "${command}", should be "download" or "calculate"`);
