@@ -14,6 +14,7 @@ async function main(argv) {
         download         Download history for a repository
         calculate        Calculate average build time and success rates over time
         history          List individual builds
+        success          Get quick stats of number of success and failed builds
 
       Options
         --auth   [authentication]  (download) Authentication to access private repo
@@ -47,6 +48,9 @@ async function main(argv) {
 
         Display build history for master branch for builds that were either successful or failed
         $ build-stats travis:boltpkg/bolt history --branch master --result SUCCESSFUL,FAILED
+
+        Display the number of success and failed builds
+        $ build-stats travis:boltpkg/bolt success
     `
   });
 
