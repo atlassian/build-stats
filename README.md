@@ -80,3 +80,10 @@ Display build history
 
 - `--branch <branchName>`: Name of the branch to show history for (**Defualt: (*)**)
 - `--result <SUCCESSFUL | FAILED | STOPPPED | any>`: Result of the branch to show history for. We can display history for multiple results by seperating them with a comma(,). To see history for builds that were either successful or failed use `--result SUCCESSFUL,FAILED` (**Default: (*)**)
+
+#### `success`
+
+Display the number of success and failed builds
+
+- `--period <days>`: How many days in a time period to display success stats for (**Default: 1**)
+- `--last <days>`: How many periods to display success stats for (**Default: 30**)
