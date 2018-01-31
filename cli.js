@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 const meow = require('meow');
-const { calculate, download, history } = require('./');
+const { calculate, download, history, success } = require('./');
 
 async function main(argv) {
   const cli = meow({
@@ -93,6 +93,18 @@ async function main(argv) {
       repo,
       branch: flags.branch,
       result: flags.result,
+      json: flags.json
+    });
+  } else if (command === 'success') {
+    await success({
+      cwd,
+      host,
+      user,
+      repo,
+      branch: flags.branch,
+      result: flags.result,
+      period: flags.period ? parseInt(flags.period, 10) : undefined,
+      last: flags.last ? parseInt(flags.last, 10) : undefined,
       json: flags.json
     });
   } else {
