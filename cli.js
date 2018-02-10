@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 const meow = require('meow');
-const { calculate, download, history, success } = require('./');
+const { calculate, download, history, success, clean } = require('./');
 
 async function main(argv) {
   const cli = meow({
@@ -15,6 +15,7 @@ async function main(argv) {
         calculate        Calculate average build time and success rates over time
         history          List individual builds
         success          Get quick stats of number of success and failed builds
+        clean            Delete the downloaded history of repository
 
       Options
         --auth   [authentication]  (download) Authentication to access private repo
@@ -51,6 +52,9 @@ async function main(argv) {
 
         Display the number of success and failed builds
         $ build-stats travis:boltpkg/bolt success
+
+        Delete the downloaded history of repository 
+        $ build-stats travis:boltpkg/bolt clean
     `
   });
 
@@ -67,7 +71,7 @@ async function main(argv) {
   let [,host, user, repo] = match;
   let command = cli.input[1];
   let flags = cli.flags;
-  let cwd = process.cwd();
+  let cwd = __dirname;
 
   if (command === 'download') {
     await download({
@@ -111,8 +115,15 @@ async function main(argv) {
       last: flags.last ? parseInt(flags.last, 10) : undefined,
       json: flags.json
     });
+  } else if (command === 'clean') {
+    await clean({
+      cwd,
+      host,
+      user,
+      repo,
+    });
   } else {
-    throw new Error(`Unknown command "${command}", should be "download" or "calculate"`);
+    throw new Error(`Unknown command "${command}", should be "download", "calculate", "history", "success" or "clean"`);
   }
 }
 

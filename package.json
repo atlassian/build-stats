@@ -38,7 +38,7 @@
     "lodash.groupby": "^4.6.0",
     "meow": "^4.0.0",
     "ora": "^1.4.0",
-    "p-limit": "^1.2.0",
+    "rimraf-promise": "^2.0.0",
     "string-to-stream": "^1.1.0"
   },
   "devDependencies": {
