@@ -50,6 +50,12 @@ Display build history for master branch for builds that were either successul or
 $ build-stats travis:boltpkg/bolt history --branch master --result SUCCESSFUL,FAILED
 ```
 
+Delete the downloaded history of repository
+
+```sh
+$ build-stats travis:boltpkg/bolt clean
+```
+
 ## Usage
 
 ```sh
@@ -87,3 +93,7 @@ Display the number of success and failed builds
 
 - `--period <days>`: How many days in a time period to display success stats for (**Default: 1**)
 - `--last <days>`: How many periods to display success stats for (**Default: 30**)
+
+#### `clean`
+
+Delete the downloaded history of repository
