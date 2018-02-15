@@ -1,3 +1,4 @@
+// @flow
 'use strict';
 exports.clean = require('./lib/commands/clean');
 exports.calculate = require('./lib/commands/calculate');

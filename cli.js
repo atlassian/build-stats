@@ -1,10 +1,19 @@
 #!/usr/bin/env node
+// @flow
 'use strict';
 const meow = require('meow');
 const { calculate, download, history, success, clean } = require('./');
 
-async function main(argv) {
-  const cli = meow({
+/*::
+  type CliType = {
+    input: Array<string>,
+    flags: { [key: string]: string | boolean },
+    showHelp: Function,
+  }
+*/
+
+async function main(argv /*: Array<string>*/) {
+  const cli/*: CliType*/ = meow({
     argv,
     help: `
       Usage

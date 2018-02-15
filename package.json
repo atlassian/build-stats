@@ -44,6 +44,7 @@
   "devDependencies": {
     "ava": "^0.24.0",
     "fixturez": "^1.0.1",
+    "flow-bin": "^0.65.0",
     "sinon": "^4.1.4"
   }
 }
