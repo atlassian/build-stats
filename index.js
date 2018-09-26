@@ -4,3 +4,4 @@ exports.calculate = require('./lib/commands/calculate');
 exports.download = require('./lib/commands/download');
 exports.history = require('./lib/commands/history');
 exports.success = require('./lib/commands/success');
+exports.cache = require('./lib/commands/cache');

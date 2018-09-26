@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 const meow = require('meow');
-const { calculate, download, history, success, clean } = require('./');
+const { calculate, download, history, success, clean, cache } = require('./');
 
 async function main(argv) {
   const cli = meow({
@@ -16,6 +16,7 @@ async function main(argv) {
         history          List individual builds
         success          Get quick stats of number of success and failed builds
         clean            Delete the downloaded history of repository
+        cache            Outputs the directory where data will be cached
 
       Options
         --auth   [authentication]  (download) Authentication to access private repo
@@ -53,8 +54,11 @@ async function main(argv) {
         Display the number of success and failed builds
         $ build-stats travis:boltpkg/bolt success
 
-        Delete the downloaded history of repository 
+        Delete the downloaded history of repository
         $ build-stats travis:boltpkg/bolt clean
+
+        Ouptut the cache directory of a repository
+        $ build-stats travis:boltpkg/bolt cache
     `
   });
 
@@ -122,8 +126,10 @@ async function main(argv) {
       user,
       repo,
     });
+  } else if (command === 'cache') {
+    await cache({ cwd, host, user, repo });
   } else {
-    throw new Error(`Unknown command "${command}", should be "download", "calculate", "history", "success" or "clean"`);
+    throw new Error(`Unknown command "${command}", should be "download", "calculate", "history", "success", "clean", "cache"`);
   }
 }
 
