@@ -19,11 +19,12 @@ async function main(argv) {
         cache            Outputs the directory where data will be cached
 
       Options
-        --auth   [authentication]  (download) Authentication to access private repo
-        --branch [name]            (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
-        --result [name]            (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
-        --period [days]            (calculate) How many days in a time period to calculate the means for (Default: 1)
-        --last   [count]           (calculate) How many periods to calculate back to (Default: 30)
+        --auth        [authentication]  (download) Authentication to access private repo
+        --concurrency [number]          (download) How many parallel downloads should be used when downloading data (Default: 10)
+        --branch      [name]            (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
+        --result      [name]            (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
+        --period      [days]            (calculate) How many days in a time period to calculate the means for (Default: 1)
+        --last        [count]           (calculate) How many periods to calculate back to (Default: 30)
 
       Services
         - bitbucket      Bitbucket Pipelines
@@ -83,7 +84,8 @@ async function main(argv) {
       host,
       user,
       repo,
-      auth: flags.auth
+      auth: flags.auth,
+      concurrency: flags.concurrency
     });
   } else if (command === 'calculate') {
     await calculate({
