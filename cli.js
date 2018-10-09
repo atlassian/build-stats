@@ -21,6 +21,8 @@ async function main(argv) {
       Options
         --auth        [authentication]  (download) Authentication to access private repo
         --concurrency [number]          (download) How many parallel downloads should be used when downloading data (Default: 10)
+        --since       [buildNumber]     (download) Overrides the normal logic of which builds to download data for.
+                                                  This should only be required in debugging/fixing errors (Default: last downloaded build)
         --branch      [name]            (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
         --result      [name]            (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
         --period      [days]            (calculate) How many days in a time period to calculate the means for (Default: 1)
@@ -34,8 +36,11 @@ async function main(argv) {
         Download pipelines builds history to .data folder:
         $ build-stats travis:boltpkg/bolt download
 
-        Download pipelines builds history to .data folder for private repository:
+        Download travis builds history to .data folder for private repository:
         $ build-stats travis:boltpkg/bolt download --auth <token>
+
+        Download a subset of builds very quickly:
+        $ build-stats travis:boltpkg/bolt download --concurrency=20 --since=300
 
         Calculate monthly average build time and success rate of a repo over the last year
         $ build-stats travis:boltpkg/bolt calculate
@@ -85,7 +90,8 @@ async function main(argv) {
       user,
       repo,
       auth: flags.auth,
-      concurrency: flags.concurrency
+      concurrency: flags.concurrency,
+      since: flags.since
     });
   } else if (command === 'calculate') {
     await calculate({
