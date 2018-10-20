@@ -36,7 +36,6 @@
     "got": "^8.0.1",
     "left-pad": "^1.2.0",
     "lodash.groupby": "^4.6.0",
-    "lodash.sortby": "^4.7.0",
     "meow": "^4.0.0",
     "mkdirp": "^0.5.1",
     "ora": "^1.4.0",
