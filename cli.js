@@ -19,10 +19,10 @@ async function main(argv) {
         cache            Outputs the directory where data will be cached
 
       Options
-        --auth        [authentication]  (download) Authentication to access private repo
-        --concurrency [number]          (download) How many parallel downloads should be used when downloading data (Default: 10)
-        --since       [buildNumber]     (download) Overrides the normal logic of which builds to download data for.
-                                                  This should only be required in debugging/fixing errors (Default: last downloaded build)
+        --auth        [authentication]  (download)  Authentication to access private repo
+        --concurrency [number]          (download)  How many parallel downloads should be used when downloading data (Default: 10)
+        --since       [buildNumber]     (download)  Overrides the normal logic of which builds to download data for.
+                                                    This should only be required in debugging/fixing errors (Default: last downloaded build)
         --branch      [name]            (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
         --result      [name]            (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
         --period      [days]            (calculate) How many days in a time period to calculate the means for (Default: 1)
@@ -33,7 +33,7 @@ async function main(argv) {
         - travis         Travis CI
 
       Examples
-        Download pipelines builds history to .data folder:
+        Download travis builds history to .data folder:
         $ build-stats travis:boltpkg/bolt download
 
         Download travis builds history to .data folder for private repository:
@@ -75,10 +75,12 @@ async function main(argv) {
   let match = cli.input[0].match(/(.*):(.*)\/(.*)/);
 
   if (!match) {
-    throw new Error(`Invalid repo "${cli.input[0]}", should be "host:user/repo"`);
+    throw new Error(
+      `Invalid repo "${cli.input[0]}", should be "host:user/repo"`
+    );
   }
 
-  let [,host, user, repo] = match;
+  let [, host, user, repo] = match;
   let command = cli.input[1];
   let flags = cli.flags;
   let cwd = __dirname;
@@ -90,7 +92,7 @@ async function main(argv) {
       user,
       repo,
       auth: flags.auth,
-      concurrency: flags.concurrency,
+      concurrency: flags.concurrency || 10,
       since: flags.since
     });
   } else if (command === 'calculate') {
@@ -132,12 +134,14 @@ async function main(argv) {
       cwd,
       host,
       user,
-      repo,
+      repo
     });
   } else if (command === 'cache') {
     await cache({ cwd, host, user, repo });
   } else {
-    throw new Error(`Unknown command "${command}", should be "download", "calculate", "history", "success", "clean", "cache"`);
+    throw new Error(
+      `Unknown command "${command}", should be "download", "calculate", "history", "success", "clean", "cache"`
+    );
   }
 }
 
