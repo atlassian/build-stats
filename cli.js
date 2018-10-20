@@ -27,6 +27,7 @@ async function main(argv) {
         --result      [name]            (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
         --period      [days]            (calculate) How many days in a time period to calculate the means for (Default: 1)
         --last        [count]           (calculate) How many periods to calculate back to (Default: 30)
+        --threshold   [time]            (calculate) Time under which builds graph is shown in green color. Default is mean of all the builds in that period
 
       Services
         - bitbucket      Bitbucket Pipelines
@@ -105,6 +106,7 @@ async function main(argv) {
       result: flags.result,
       period: flags.period ? parseInt(flags.period, 10) : undefined,
       last: flags.last ? parseInt(flags.last, 10) : undefined,
+      threshold: flags.threshold,
       json: flags.json
     });
   } else if (command === 'history') {
@@ -115,6 +117,7 @@ async function main(argv) {
       repo,
       branch: flags.branch,
       result: flags.result,
+      threshold: flags.threshold,
       json: flags.json
     });
   } else if (command === 'success') {
