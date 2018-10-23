@@ -79,13 +79,15 @@ Calculate the mean and see the stats of build history
 
 - `--period <days>`: How many days in a time period to calculate the build stats for (**Default: 1**)
 - `--last <days>`: How many periods to calculate back to (**Default: 30**)
+- `--threshold <minutes>`: Time under which builds graph is shown in green color. (**Default: mean of all the builds in that period**)
 
 #### `history`
 
 Display build history
 
-- `--branch <branchName>`: Name of the branch to show history for (**Defualt: (*)**)
-- `--result <SUCCESSFUL | FAILED | STOPPPED | any>`: Result of the branch to show history for. We can display history for multiple results by seperating them with a comma(,). To see history for builds that were either successful or failed use `--result SUCCESSFUL,FAILED` (**Default: (*)**)
+- `--branch <branchName>`: Name of the branch to show history for (**Defualt: (\*)**)
+- `--result <SUCCESSFUL | FAILED | STOPPPED | any>`: Result of the branch to show history for. We can display history for multiple results by seperating them with a comma(,). To see history for builds that were either successful or failed use `--result SUCCESSFUL,FAILED` (**Default: (\*)**)
+- `--threshold <minutes>`: Time under which builds graph is shown in green color. (**Default: mean of all the builds in that period**)
 
 #### `success`
 
@@ -97,3 +99,7 @@ Display the number of success and failed builds
 #### `clean`
 
 Delete the downloaded history of repository
+
+#### cache
+
+Outputs the directory where data will be cached
