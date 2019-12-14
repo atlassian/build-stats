@@ -25,6 +25,11 @@
   "engines": {
     "node": ">=8.5.0"
   },
+  "ava": {
+    "files": [
+      "!__fixtures__/**/*"
+    ]
+  },
   "scripts": {
     "test": "ava"
   },
@@ -44,8 +49,8 @@
     "string-to-stream": "^1.1.0"
   },
   "devDependencies": {
-    "ava": "^0.24.0",
+    "ava": "^2.4.0",
     "fixturez": "^1.0.1",
-    "sinon": "^4.1.4"
+    "sinon": "^7.5.0"
   }
 }
