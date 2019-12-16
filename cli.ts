@@ -1,9 +1,8 @@
 #!/usr/bin/env node
-'use strict';
-const meow = require('meow');
-const { calculate, download, history, success, clean, cache } = require('./');
+import meow from 'meow';
+import { calculate, download, history, success, clean, cache } from './index';
 
-async function main(argv) {
+async function main(argv: string[]) {
   const cli = meow({
     argv,
     help: `
