@@ -2,8 +2,8 @@
   "name": "build-stats",
   "version": "1.6.0",
   "description": "Calculate build stats",
-  "main": "index.js",
-  "bin": "cli.js",
+  "main": "dist/index.js",
+  "bin": "dist/cli.js",
   "author": "Ajay Narain Mathur <ajaynarainmathur@gmail.com>",
   "license": "MIT",
   "keywords": [
@@ -31,6 +31,8 @@
     ]
   },
   "scripts": {
+    "build": "tsc && chmod +x dist/cli.js",
+    "prepublishOnly": "yarn build",
     "test": "ava"
   },
   "dependencies": {
@@ -51,6 +53,7 @@
   "devDependencies": {
     "ava": "^2.4.0",
     "fixturez": "^1.0.1",
-    "sinon": "^7.5.0"
+    "sinon": "^7.5.0",
+    "typescript": "^3.7.3"
   }
 }

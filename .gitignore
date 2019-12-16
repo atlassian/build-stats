@@ -3,3 +3,4 @@ node_modules
 *.log
 .data
 __fixtures__/**/.data
+dist
