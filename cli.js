@@ -64,7 +64,7 @@ async function main(argv) {
         Delete the downloaded history of repository
         $ build-stats travis:boltpkg/bolt clean
 
-        Ouptut the cache directory of a repository
+        Output the cache directory of a repository
         $ build-stats travis:boltpkg/bolt cache
     `
   });
