@@ -31,7 +31,8 @@
     ]
   },
   "scripts": {
-    "build": "tsc && chmod +x dist/cli.js",
+    "build": "rm -rf dist && tsc && chmod +x dist/cli.js",
+    "dev": "yarn build && ./dist/cli.js",
     "prepublishOnly": "yarn build",
     "test": "ava"
   },
