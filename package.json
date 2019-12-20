@@ -33,6 +33,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc && chmod +x dist/cli.js",
     "dev": "yarn build && ./dist/cli.js",
+    "format": "prettier --write \"{lib/**/*.{js, ts}, *.{js, ts}}\"",
     "prepublishOnly": "yarn build",
     "test": "ava"
   },
@@ -55,6 +56,7 @@
     "@types/meow": "^5.0.0",
     "ava": "^2.4.0",
     "fixturez": "^1.0.1",
+    "prettier": "1.19.1",
     "sinon": "^7.5.0",
     "typescript": "^3.7.3"
   }
