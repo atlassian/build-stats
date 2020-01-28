@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+// #!/usr/bin/env node
 import meow from 'meow';
 import { calculate, download, history, success, clean, cache } from './index';
 
@@ -80,10 +80,10 @@ async function main(argv: string[]) {
     );
   }
 
-  let [, host, user, repo] = match;
-  let command = cli.input[1];
-  let flags = cli.flags;
-  let cwd = __dirname;
+  let [, host, user, repo]: string[] = match;
+  let command: string = cli.input[1];
+  let flags: { [key:string]: string } = cli.flags;
+  let cwd: string = __dirname;
 
   if (command === 'download') {
     await download({

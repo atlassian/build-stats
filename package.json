@@ -32,7 +32,7 @@
   },
   "scripts": {
     "build": "rm -rf dist && tsc && chmod +x dist/cli.js",
-    "dev": "yarn build && ./dist/cli.js",
+    "dev": "ts-node ./cli.ts",
     "format": "prettier --write \"{lib/**/*.{js, ts}, *.{js, ts}}\"",
     "prepublishOnly": "yarn build",
     "test": "ava"
@@ -58,6 +58,7 @@
     "fixturez": "^1.0.1",
     "prettier": "1.19.1",
     "sinon": "^7.5.0",
+    "ts-node": "^8.6.2",
     "typescript": "^3.7.3"
   }
 }
