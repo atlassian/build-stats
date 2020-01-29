@@ -1,14 +1,11 @@
 "use strict";
-const chalk = require("chalk");
-const got = require("got");
-const ora = require("ora");
-const pLimit = require("p-limit");
-const path = require("path");
-const fs = require("../utils/fs");
-const {
-  getBuildDir,
-  getLastDownloadedBuildNumber
-} = require("../utils/builds");
+import chalk from "chalk";
+import got from "got";
+import ora from "ora";
+import pLimit from "p-limit";
+import path from "path";
+import fs from "../utils/fs";
+import { getLastDownloadedBuildNumber } from "../utils/builds";
 
 const RESULT_TO_STATUS = {
   "0": "SUCCESSFUL",
@@ -28,7 +25,7 @@ function toStandardBuildConfig(build) {
 }
 
 // Knowing which url to use can be a pain. It can change depending on a few things:
-function getTravisUrl(user, repo, apiVersion, auth) {
+function getTravisUrl(user: string, repo: string, apiVersion: number, auth: string) {
   // if looking for a public (open source) build, we use travis-ci.org
   // otherwise, we use travis-ci.com
   let baseUrl = auth
@@ -58,18 +55,23 @@ async function getTotalBuilds(user, repo, auth) {
   return resJson["@pagination"].count;
 }
 
-async function fetchPipelines(
-  buildsDir,
-  { auth, concurrency, downloadHook, since }
+interface DownloadOptions {
+  auth: string;
+  concurrency: number;
+  downloadHook?: Function;
+  repo: string;
+  since: number;
+  user: string
+}
+
+export default async function fetchPipelines(
+  buildsDir: string,
+  { auth, concurrency, downloadHook, repo, since, user }: DownloadOptions
 ) {
-  const [repo, user] = buildsDir.match(/(.*)\/(.*)\/(.*)\//).reverse();
   const pageLen = 25;
   const limit = pLimit(concurrency); // limits the number of concurrent requests
-  let lastDownloaded = since;
+  let lastDownloaded = since ? since : await getLastDownloadedBuildNumber(buildsDir);
 
-  if (lastDownloaded == undefined) {
-    lastDownloaded = await getLastDownloadedBuildNumber(buildsDir);
-  }
   let totalBuilds = await getTotalBuilds(user, repo, auth);
   // "pages" move backwards, so by starting at offset 26 for example, we'll get builds 1-25
   let startingOffset =
@@ -113,5 +115,3 @@ async function fetchPipelines(
     chalk`Download completed. Total Builds: {green ${totalBuilds}}`
   );
 }
-
-exports.download = fetchPipelines;

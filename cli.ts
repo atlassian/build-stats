@@ -2,6 +2,18 @@
 import meow from 'meow';
 import { calculate, download, history, success, clean, cache } from './index';
 
+interface Flags {
+  auth?: string;
+  branch?: string;
+  concurrency: number;
+  json?: boolean;
+  last?: number;
+  period?: number;
+  result?: string;
+  since?: number;
+  threshold?: number;
+}
+
 async function main(argv: string[]) {
   const cli = meow({
     argv,
@@ -65,7 +77,31 @@ async function main(argv: string[]) {
 
         Output the cache directory of a repository
         $ build-stats travis:boltpkg/bolt cache
-    `
+    `,
+    flags: {
+      auth: {
+        type: 'string'
+      },
+      branch: {
+        type: 'string'
+      },
+      concurrency: {
+        type: 'number',
+        default: 10
+      },
+      json: {
+        type: 'boolean'
+      },
+      last: {
+        type: 'number'
+      },
+      period: {
+        type: 'number'
+      },
+      since: {
+        type: 'number'
+      }
+    }
   });
 
   if (cli.input.length < 2) {
@@ -82,7 +118,7 @@ async function main(argv: string[]) {
 
   let [, host, user, repo]: string[] = match;
   let command: string = cli.input[1];
-  let flags: { [key:string]: string } = cli.flags;
+  let flags: Flags = cli.flags;
   let cwd: string = __dirname;
 
   if (command === 'download') {
@@ -92,7 +128,7 @@ async function main(argv: string[]) {
       user,
       repo,
       auth: flags.auth,
-      concurrency: flags.concurrency || 10,
+      concurrency: flags.concurrency,
       since: flags.since
     });
   } else if (command === 'calculate') {
@@ -103,8 +139,8 @@ async function main(argv: string[]) {
       repo,
       branch: flags.branch,
       result: flags.result,
-      period: flags.period ? parseInt(flags.period, 10) : undefined,
-      last: flags.last ? parseInt(flags.last, 10) : undefined,
+      period: flags.period,
+      last: flags.last,
       threshold: flags.threshold,
       json: flags.json
     });
@@ -127,8 +163,8 @@ async function main(argv: string[]) {
       repo,
       branch: flags.branch,
       result: flags.result,
-      period: flags.period ? parseInt(flags.period, 10) : undefined,
-      last: flags.last ? parseInt(flags.last, 10) : undefined,
+      period: flags.period,
+      last: flags.last,
       json: flags.json
     });
   } else if (command === 'clean') {

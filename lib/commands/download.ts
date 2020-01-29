@@ -7,8 +7,8 @@ interface DownloadArgs {
   user: string;
   repo: string;
   auth: string;
-  concurrency: string | number;
-  since: string
+  concurrency: number;
+  since: number
 }
 
 export default async function download(
@@ -19,7 +19,7 @@ export default async function download(
   let adapter = adapters[host];
 
   if (adapter) {
-    await adapter.download(buildsDir, {
+    await adapter(buildsDir, {
       auth,
       concurrency,
       downloadHook,

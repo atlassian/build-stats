@@ -1,10 +1,10 @@
 "use strict";
-const builds = require("../utils/builds");
-const math = require("../utils/math");
-const formatters = require("../utils/formatters");
-const cli = require("../utils/cli");
+import builds from "../utils/builds";
+import math from "../utils/math";
+import formatters from "../utils/formatters";
+import cli from "../utils/cli";
 
-async function history({
+export default async function history({
   cwd,
   host,
   user,
@@ -53,5 +53,3 @@ async function history({
 
   return history;
 }
-
-module.exports = history;

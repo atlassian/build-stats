@@ -1,10 +1,9 @@
 "use strict";
-const groupBy = require("lodash.groupby");
-const cli = require("../utils/cli");
-const math = require("../utils/math");
-const formatters = require("../utils/formatters");
-const builds = require("../utils/builds");
-const leftPad = require("left-pad");
+import groupBy from "lodash.groupby";
+import cli from "../utils/cli";
+import math from "../utils/math";
+import formatters from "../utils/formatters";
+import builds from "../utils/builds";
 
 function calculateGroup(group) {
   let totalBuilds = group.length;
@@ -27,7 +26,7 @@ function calculateGroup(group) {
 
 function calculateRanges(ranges) {
   return ranges.map(range => {
-    let result = {};
+    let result: {[key: string]: any} = {};
     let groups = groupBy(range, build => build.result);
 
     result.ALL = calculateGroup(range);
@@ -39,7 +38,7 @@ function calculateRanges(ranges) {
   });
 }
 
-async function success({
+export default async function calculate({
   cwd,
   host,
   user,
@@ -48,6 +47,7 @@ async function success({
   result = "*",
   period = 1,
   last = 30,
+  threshold,
   json = false
 }) {
   let history = await builds.getHistory(cwd, host, user, repo, {
@@ -56,6 +56,15 @@ async function success({
   });
   let ranges = builds.toTimeRanges(history, { period, last });
   let results = calculateRanges(ranges);
+
+  let successfulRanges = results.filter(range => !!range.SUCCESSFUL);
+  let buildPercentileMean = successfulRanges.map(
+    range => range.SUCCESSFUL.buildPercentileMean
+  );
+  let { min, max } = math.getMinMax(buildPercentileMean);
+  if (threshold == undefined) {
+    threshold = (math.getMean([min, max]) / 60).toPrecision(2);
+  }
 
   if (json) {
     console.log(results);
@@ -66,28 +75,27 @@ async function success({
           "",
           "Date Range (DD/MM/YYY)",
           "Total Builds",
-          "Failed Builds",
-          "Successful Builds",
-          ""
+          "Mean",
+          "Mean (95%)",
+          "Longest",
+          `Build Time ( threshold: ${threshold} mins )`
         ],
-        rows: results.map((range, index) => {
-          const FAILED_BUILDS = range.FAILED ? range.FAILED.totalBuilds : 0;
-          const SUCCESSFUL_BUILDS = range.SUCCESSFUL
-            ? range.SUCCESSFUL.totalBuilds
-            : 0;
-          const FAILED_BUILDS_MEAN = range.FAILED
-            ? range.FAILED.buildPercentileMean
-            : 0;
-          const SUCCESSFUL_BUILDS_MEAN = range.SUCCESSFUL
-            ? range.SUCCESSFUL.buildPercentileMean
-            : 0;
+        rows: successfulRanges.map((range, index) => {
           return [
             index + 1,
-            formatters.dateRange(range.ALL.start, range.ALL.end),
-            FAILED_BUILDS + SUCCESSFUL_BUILDS,
-            FAILED_BUILDS,
-            SUCCESSFUL_BUILDS,
-            formatters.singleBar(SUCCESSFUL_BUILDS, FAILED_BUILDS)
+            formatters.dateRange(range.SUCCESSFUL.start, range.SUCCESSFUL.end),
+            range.SUCCESSFUL.totalBuilds,
+            formatters.duration(range.SUCCESSFUL.buildDurationMean),
+            formatters.duration(range.SUCCESSFUL.buildPercentileMean),
+            `${formatters.duration(
+              range.SUCCESSFUL.longestBuild.duration
+            )} (${formatters.id(range.SUCCESSFUL.longestBuild.id)})`,
+            formatters.bar(
+              range.SUCCESSFUL.buildPercentileMean,
+              min,
+              max,
+              threshold
+            )
           ];
         })
       })
@@ -96,5 +104,3 @@ async function success({
 
   return results;
 }
-
-module.exports = success;
