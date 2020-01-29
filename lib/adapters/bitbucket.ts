@@ -1,29 +1,27 @@
 "use strict";
 
-const chalk = require("chalk");
-const pLimit = require("p-limit");
-const got = require("got");
-const ora = require("ora");
-const path = require("path");
-const { getLastDownloadedBuildNumber } = require("../utils/builds");
-const fs = require("../utils/fs");
+import chalk from "chalk";
+import pLimit from "p-limit";
+import got from "got";
+import ora from "ora";
+import path from "path";
+import { getLastDownloadedBuildNumber } from "../utils/builds";
+import fs from "../utils/fs";
 
 const getBaseUrl = (user: string, repo: string) =>
   `https://api.bitbucket.org/2.0/repositories/${user}/${repo}/pipelines/`;
 
-function toStandardBuildConfig(build) {
-  return {
-    id: build.build_number,
-    uuid: build.uuid,
-    createdOn: build.created_on,
-    duration: build.duration_in_seconds,
-    result: build.state.result.name,
-    refType: build.target.ref_type,
-    refName: build.target.ref_name
-  };
-}
+const toStandardBuildConfig = build => ({
+  id: build.build_number,
+  uuid: build.uuid,
+  createdOn: build.created_on,
+  duration: build.duration_in_seconds,
+  result: build.state.result.name,
+  refType: build.target.ref_type,
+  refName: build.target.ref_name
+});
 
-async function getTotalBuilds(user: string, repo: string, { auth }: { auth: string}): Promise<number> {
+async function getTotalBuilds(user: string, repo: string, { auth }: { auth: string }): Promise<number> {
   let res = await got(getBaseUrl(user, repo), { auth });
   let resJson = JSON.parse(res.body);
   return resJson.size;

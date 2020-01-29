@@ -1,11 +1,11 @@
 "use strict";
-const rimraf = require("rimraf-promise");
-const chalk = require("chalk");
-const ora = require("ora");
-const builds = require("../utils/builds");
-const adapters = require("../adapters");
+import rimraf from "rimraf-promise";
+import chalk from "chalk";
+import ora from "ora";
+import builds from "../utils/builds";
+import adapters from "../adapters";
 
-async function clean({ cwd, host, user, repo }) {
+export default async function clean({ cwd, host, user, repo }) {
   let buildsDir = await builds.getBuildDir(cwd, host, user, repo);
   const spinner = ora({
     text: `Starting clean`
@@ -18,5 +18,3 @@ async function clean({ cwd, host, user, repo }) {
     spinner.fail(chalk`Failed to clean with error {red ${error}}`);
   }
 }
-
-module.exports = clean;
