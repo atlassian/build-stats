@@ -1,4 +1,3 @@
-'use strict';
 import test from 'ava';
 import * as math from '../../lib/utils/math';
 
