@@ -1,7 +1,7 @@
 'use strict';
-const test = require('ava');
-const fixtures = require('fixturez');
-const builds = require('../../lib/utils/builds');
+import test from 'ava';
+import fixtures from 'fixturez';
+import * as builds from '../../lib/utils/builds';
 const f = fixtures(__dirname);
 
 test('builds.getBuildDir()', async t => {

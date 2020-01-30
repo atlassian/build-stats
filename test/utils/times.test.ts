@@ -1,8 +1,7 @@
-'use strict';
-const test = require('ava');
-const times = require('../../lib/utils/times');
+import test from 'ava';
+import * as times from '../../lib/utils/times';
 
-const NOW = new Date();
+const NOW = Date.now();
 const ONE_DAY_AGO = new Date(NOW - times.daysToMs(1));
 const ONE_YEAR_AGO = new Date(NOW - times.daysToMs(365));
 

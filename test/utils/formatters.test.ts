@@ -1,6 +1,6 @@
 'use strict';
-const test = require('ava');
-const formatters = require('../../lib/utils/formatters');
+import test from 'ava';
+import * as formatters from '../../lib/utils/formatters';
 
 test.todo('formatters.id');
 test.todo('formatters.duration');

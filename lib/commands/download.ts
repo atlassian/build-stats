@@ -6,9 +6,9 @@ interface DownloadArgs {
   host: string;
   user: string;
   repo: string;
-  auth: string;
-  concurrency: number;
-  since: number
+  auth?: string;
+  concurrency?: number;
+  since?: number
 }
 
 export default async function download(

@@ -1,6 +1,6 @@
 'use strict';
-const test = require('ava');
-const math = require('../../lib/utils/math');
+import test from 'ava';
+import * as math from '../../lib/utils/math';
 
 test('math.getMinMax()', t => {
   t.deepEqual(math.getMinMax([1, 2, 3]), { min: 1, max: 3 });

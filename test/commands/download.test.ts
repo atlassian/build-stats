@@ -1,9 +1,8 @@
-'use strict';
-const test = require('ava');
-const download = require('../../lib/commands/download');
-const sinon = require('sinon');
-const fixtures = require('fixturez');
-const adapters = require('../../lib/adapters');
+import test from 'ava';
+import download from '../../lib/commands/download';
+import sinon from 'sinon';
+import fixtures from 'fixturez';
+import adapters from '../../lib/adapters';
 const f = fixtures(__dirname);
 
 test.skip('it calls bitbucket download with appropiate path', async t => {
