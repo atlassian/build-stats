@@ -4,7 +4,7 @@ import got from "got";
 import ora from "ora";
 import pLimit from "p-limit";
 import path from "path";
-import fs from "../utils/fs";
+import * as fs from "../utils/fs";
 import { getLastDownloadedBuildNumber } from "../utils/builds";
 
 const RESULT_TO_STATUS = {

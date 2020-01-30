@@ -1,4 +1,4 @@
-// #!/usr/bin/env node
+#!/usr/bin/env node
 import meow from 'meow';
 import { calculate, download, history, success, clean, cache } from './index';
 
