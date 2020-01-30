@@ -1,4 +1,3 @@
-'use strict';
 export { default as cache } from './lib/commands/cache';
 export { default as calculate } from './lib/commands/calculate';
 export { default as clean } from './lib/commands/clean';

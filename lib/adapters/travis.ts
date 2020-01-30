@@ -1,4 +1,3 @@
-"use strict";
 import chalk from "chalk";
 import got from "got";
 import ora from "ora";

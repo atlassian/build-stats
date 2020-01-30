@@ -1,4 +1,3 @@
-"use strict";
 import rimraf from "rimraf-promise";
 import chalk from "chalk";
 import ora from "ora";

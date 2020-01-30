@@ -1,4 +1,3 @@
-'use strict';
 import test from 'ava';
 import fixtures from 'fixturez';
 import * as builds from '../../lib/utils/builds';

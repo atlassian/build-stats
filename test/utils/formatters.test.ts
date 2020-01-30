@@ -1,4 +1,3 @@
-'use strict';
 import test from 'ava';
 import * as formatters from '../../lib/utils/formatters';
 

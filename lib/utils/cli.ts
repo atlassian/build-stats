@@ -1,4 +1,3 @@
-"use strict";
 import Table from "cli-table";
 import stringToStream from "string-to-stream";
 import defaultPager from "default-pager";

@@ -1,4 +1,3 @@
-"use strict";
 import groupBy from "lodash.groupby";
 import * as cli from "../utils/cli";
 import * as math from "../utils/math";
