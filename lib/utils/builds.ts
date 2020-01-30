@@ -1,16 +1,16 @@
-"use strict";
-const fs = require("./fs");
-const path = require("path");
-const times = require("./times");
+import * as fs from "./fs";
+import path from "path";
+import * as times from "./times";
+
 const defaultBuildDir = path.join(__dirname, "../..");
 
-async function getBuildDir(cwd = defaultBuildDir, host, user, repo) {
+export async function getBuildDir(cwd = defaultBuildDir, host, user, repo) {
   const buildsDir = path.join(cwd, ".data", host, user, repo, "builds");
   await fs.mkdirp(buildsDir);
   return buildsDir;
 }
 
-async function getHistory(cwd, host, user, repo, filters) {
+export async function getHistory(cwd, host, user, repo, filters) {
   let buildsDir = await getBuildDir(cwd, host, user, repo);
   let files = await fs.readDir(buildsDir);
   let builds = [];
@@ -41,7 +41,7 @@ async function getHistory(cwd, host, user, repo, filters) {
   return filtered;
 }
 
-function findLongest(group) {
+export function findLongest(group) {
   return group.reduce((longest, build) => {
     if (longest === null) return build;
     if (longest.duration < build.duration) return build;
@@ -49,7 +49,7 @@ function findLongest(group) {
   }, null);
 }
 
-function toTimeRanges(builds, { period, last }) {
+export function toTimeRanges(builds, { period, last }) {
   let queue = builds.slice();
   let ranges = [];
 
@@ -76,7 +76,7 @@ function toTimeRanges(builds, { period, last }) {
   return ranges;
 }
 
-async function getLastDownloadedBuildNumber(buildsDir) {
+export async function getLastDownloadedBuildNumber(buildsDir) {
   const currentlyDownloadedBuilds = await fs.readDir(buildsDir);
   const lastDownloadedBuildNumber = currentlyDownloadedBuilds
     .filter(file => file.match(/^.+?\.json$/))
@@ -95,3 +95,4 @@ module.exports = {
   findLongest,
   toTimeRanges
 };
+

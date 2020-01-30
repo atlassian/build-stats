@@ -6,7 +6,7 @@ import got from "got";
 import ora from "ora";
 import path from "path";
 import { getLastDownloadedBuildNumber } from "../utils/builds";
-import fs from "../utils/fs";
+import * as fs from "../utils/fs";
 
 const getBaseUrl = (user: string, repo: string) =>
   `https://api.bitbucket.org/2.0/repositories/${user}/${repo}/pipelines/`;

@@ -2,7 +2,7 @@
 import rimraf from "rimraf-promise";
 import chalk from "chalk";
 import ora from "ora";
-import builds from "../utils/builds";
+import * as builds from "../utils/builds";
 import adapters from "../adapters";
 
 export default async function clean({ cwd, host, user, repo }) {

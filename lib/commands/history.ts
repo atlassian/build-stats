@@ -1,8 +1,7 @@
-"use strict";
-import builds from "../utils/builds";
-import math from "../utils/math";
-import formatters from "../utils/formatters";
-import cli from "../utils/cli";
+import * as builds from "../utils/builds";
+import * as math from "../utils/math";
+import * as formatters from "../utils/formatters";
+import * as cli from "../utils/cli";
 
 export default async function history({
   cwd,

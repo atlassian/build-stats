@@ -1,8 +1,8 @@
 import groupBy from "lodash.groupby";
-import cli from "../utils/cli";
-import math from "../utils/math";
-import formatters from "../utils/formatters";
-import builds from "../utils/builds";
+import * as cli from "../utils/cli";
+import * as math from "../utils/math";
+import * as formatters from "../utils/formatters";
+import * as builds from "../utils/builds";
 
 function calculateGroup(group) {
   let totalBuilds = group.length;
@@ -37,7 +37,7 @@ function calculateRanges(ranges) {
   });
 }
 
-async function success({
+export default async function success({
   cwd,
   host,
   user,
@@ -94,5 +94,3 @@ async function success({
 
   return results;
 }
-
-module.exports = success;
