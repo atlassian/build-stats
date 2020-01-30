@@ -28,7 +28,13 @@
   "ava": {
     "files": [
       "!__fixtures__/**/*"
-    ]
+    ],
+    "extensions": [
+			"ts"
+		],
+		"require": [
+			"ts-node/register"
+		]
   },
   "scripts": {
     "build": "rm -rf dist && tsc && chmod +x dist/cli.js",

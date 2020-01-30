@@ -1,6 +1,6 @@
 'use strict';
-const test = require('ava');
-const fs = require('../../lib/utils/fs');
+import test from 'ava';
+import * as fs from '../../lib/utils/fs';
 
 test.todo('fs.mkdir');
 test.todo('fs.readDir');
