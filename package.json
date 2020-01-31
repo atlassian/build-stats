@@ -1,6 +1,6 @@
 {
   "name": "build-stats",
-  "version": "1.6.0",
+  "version": "1.7.0-0",
   "description": "Calculate build stats",
   "main": "dist/index.js",
   "bin": "dist/cli.js",
@@ -30,11 +30,11 @@
       "!__fixtures__/**/*"
     ],
     "extensions": [
-			"ts"
-		],
-		"require": [
-			"ts-node/register"
-		]
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
   },
   "scripts": {
     "build": "rm -rf dist && tsc && chmod +x dist/cli.js",
