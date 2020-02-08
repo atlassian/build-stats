@@ -23,11 +23,13 @@ function toStandardBuildConfig(build) {
   };
 }
 
+// Needs auth type:https://developer.atlassian.com/server/bamboo/using-the-bamboo-rest-apis/
 const bambooApiUrl = (bambooUrl, projectKey_planKey) =>
   `https://${bambooUrl}/rest/api/latest/result/${projectKey_planKey}`;
 
 async function getTotalBuilds(bambooUrl, projectKey_planKey, auth) {
   const bambooBuildUrl = bambooApiUrl(bambooUrl, projectKey_planKey);
+  // const bambooLatestBuild = `${bambooBuildUrl}.json?max-result=0`;
   const bambooLatestBuild = `${bambooBuildUrl}-latest.json`;
   let res = await got(bambooLatestBuild, {
     auth
@@ -52,31 +54,33 @@ export default async function bambooBuilds(
   spinner.text = "Starting download";
 
   let requestPromises = [];
-  for (
-    let buildNumber = startingBuild;
-    buildNumber <= totalBuilds;
-    buildNumber++
-  ) {
-    let url = `${bambooApiUrl(
-      bambooUrl,
-      projectKey_planKey
-    )}-${buildNumber}.json`;
-    requestPromises.push(
-      limit(async () => {
-        let res = await got(url, { auth });
-        let resJson = JSON.parse(res.body);
+  /**
+   * Bamboo is a special case:
+   * Data for old build can be deleted for Bamboo: https://confluence.atlassian.com/bamboo/deleting-the-results-of-a-plan-build-289276916.html
+   * so there can be gaps in the build numbers
+   */
 
-        let build = toStandardBuildConfig(resJson);
+  // Get data for all the available buils
+  let urlGetAllBuilds = `${bambooApiUrl(
+    bambooUrl,
+    projectKey_planKey
+  )}.json?max-result=0`;
 
-        let filePath = path.join(buildsDir, `${build.id}.json`);
+  let res = await got(urlGetAllBuilds, { auth });
+  let resJson = JSON.parse(res.body);
+  const allBuildData = resJson?.results?.result;
 
-        downloaded += 1;
-        spinner.text = chalk`Downloaded data for {green ${downloaded}} builds of {green ${totalBuilds}} builds`;
-        downloadHook && downloadHook(downloaded, totalBuilds);
+  for (let buildData in allBuildData) {
+    limit(async () => {
+      let build = toStandardBuildConfig(buildData);
+      let filePath = path.join(buildsDir, `${build.id}.json`);
+  
+      downloaded += 1;
+      spinner.text = chalk`Downloaded data for {green ${downloaded}} builds of {green ${totalBuilds}} builds`;
+      downloadHook && downloadHook(downloaded, totalBuilds);
 
-        return fs.writeFile(filePath, JSON.stringify(build));
-      })
-    );
+      return fs.writeFile(filePath, JSON.stringify(build));
+    });
   }
 
   await Promise.all(requestPromises);
