@@ -23,12 +23,11 @@ function toStandardBuildConfig(build) {
   };
 }
 
-// Needs auth type:https://developer.atlassian.com/server/bamboo/using-the-bamboo-rest-apis/
-const bambooApiUrl = (bambooUrl, projectKey_planKey) =>
-  `https://${bambooUrl}/rest/api/latest/result/${projectKey_planKey}`;
+const bambooApiUrl = (bambooUrl, planKey) =>
+  `https://${bambooUrl}/rest/api/latest/result/${planKey}`;
 
-async function getTotalBuilds(bambooUrl, projectKey_planKey, auth) {
-  const bambooBuildUrl = bambooApiUrl(bambooUrl, projectKey_planKey);
+async function getTotalBuilds(bambooUrl, planKey, auth) {
+  const bambooBuildUrl = bambooApiUrl(bambooUrl, planKey);
   // const bambooLatestBuild = `${bambooBuildUrl}.json?max-result=0`;
   const bambooLatestBuild = `${bambooBuildUrl}-latest.json`;
   let res = await got(bambooLatestBuild, {
@@ -40,7 +39,7 @@ async function getTotalBuilds(bambooUrl, projectKey_planKey, auth) {
 
 export default async function bambooBuilds(
   buildsDir,
-  { auth, concurrency, downloadHook, repo: projectKey_planKey, since, user: bambooUrl }
+  { auth, concurrency, downloadHook, repo: planKey, since, user: bambooUrl }
 ) {
   let spinner = ora().start("Initializing download");
   const limit = pLimit(concurrency);
@@ -49,7 +48,7 @@ export default async function bambooBuilds(
     lastDownloaded = await getLastDownloadedBuildNumber(buildsDir);
   }
   let startingBuild = lastDownloaded ? lastDownloaded + 1 : 1;
-  let totalBuilds = await getTotalBuilds(bambooUrl, projectKey_planKey, auth);
+  let totalBuilds = await getTotalBuilds(bambooUrl, planKey, auth);
   let downloaded = startingBuild - 1;
   spinner.text = "Starting download";
 
@@ -63,7 +62,7 @@ export default async function bambooBuilds(
   // Get data for all the available buils
   let urlGetAllBuilds = `${bambooApiUrl(
     bambooUrl,
-    projectKey_planKey
+    planKey
   )}.json?max-result=0`;
 
   let res = await got(urlGetAllBuilds, { auth });
