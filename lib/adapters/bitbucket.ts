@@ -27,7 +27,7 @@ async function getTotalBuilds(user: string, repo: string, { auth }: { auth: stri
 
 interface DownloadOptions {
   auth: string;
-  concurrency: string | number;
+  concurrency: number;
   downloadHook?: Function;
   repo: string;
   since: string;
