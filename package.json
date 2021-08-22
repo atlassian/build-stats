@@ -61,7 +61,7 @@
     "ava": "^3.15.0",
     "fixturez": "^1.0.1",
     "prettier": "1.19.1",
-    "sinon": "^7.5.0",
+    "sinon": "11.1.2",
     "ts-node": "^8.6.2",
     "typescript": "3.9.10"
   }
