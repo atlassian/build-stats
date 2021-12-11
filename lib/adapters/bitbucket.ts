@@ -19,10 +19,10 @@ const toStandardBuildConfig = (build) => ({
   refName: build.target.ref_name,
 });
 
-async function getTotalBuilds(
+export async function getTotalBuilds(
   user: string,
   repo: string,
-  { auth }: { auth: string }
+  { auth }: { auth?: string }
 ): Promise<number> {
   let res = await got(getBaseUrl(user, repo), { auth });
   let resJson = JSON.parse(res.body);
@@ -30,7 +30,7 @@ async function getTotalBuilds(
 }
 
 interface DownloadOptions {
-  auth: string;
+  auth?: string;
   concurrency: number;
   downloadHook?: Function;
   repo: string;

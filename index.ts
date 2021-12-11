@@ -91,3 +91,5 @@ export default async function main({
       );
   }
 }
+
+export { cache, calculate, clean, download, history, success };
