@@ -7,7 +7,7 @@ import adapters from "../adapters";
 export default async function clean({ cwd, host, user, repo }) {
   let buildsDir = await builds.getBuildDir(cwd, host, user, repo);
   const spinner = ora({
-    text: `Starting clean`
+    text: `Starting clean`,
   }).start();
 
   try {

@@ -65,7 +65,7 @@ build-stats <service>:<user>/<repo> <command> [...options]
 - `service`: CI Service (`travis` or `bitbucket` or `bamboo`)
 - `user/repo`: Project specifier (Example: `https://travis-ci.org/boltpkg/bolt` &rarr; `boltpkg/bolt`)
 
-**Note: In case for Bamboo, user is the url to the Bamboo server and repo is the plankey of the project.
+\*\*Note: In case for Bamboo, user is the url to the Bamboo server and repo is the plankey of the project.
 
 ### Commands
 

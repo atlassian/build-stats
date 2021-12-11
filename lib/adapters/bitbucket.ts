@@ -9,17 +9,21 @@ import * as fs from "../utils/fs";
 const getBaseUrl = (user: string, repo: string) =>
   `https://api.bitbucket.org/2.0/repositories/${user}/${repo}/pipelines/`;
 
-const toStandardBuildConfig = build => ({
+const toStandardBuildConfig = (build) => ({
   id: build.build_number,
   uuid: build.uuid,
   createdOn: build.created_on,
   duration: build.duration_in_seconds,
   result: build.state.result.name,
   refType: build.target.ref_type,
-  refName: build.target.ref_name
+  refName: build.target.ref_name,
 });
 
-async function getTotalBuilds(user: string, repo: string, { auth }: { auth: string }): Promise<number> {
+async function getTotalBuilds(
+  user: string,
+  repo: string,
+  { auth }: { auth: string }
+): Promise<number> {
   let res = await got(getBaseUrl(user, repo), { auth });
   let resJson = JSON.parse(res.body);
   return resJson.size;
@@ -31,7 +35,7 @@ interface DownloadOptions {
   downloadHook?: Function;
   repo: string;
   since: string;
-  user: string
+  user: string;
 }
 
 export default async function fetchBitbucketPipeline(
@@ -42,7 +46,9 @@ export default async function fetchBitbucketPipeline(
   const spinner = ora().start("Initializing download");
   const pagelen = 100;
   const limit = pLimit(concurrency); // limits the number of concurrent requests
-  const lastDownloaded: number = !isNaN(Number(since)) ? Number(since) : await getLastDownloadedBuildNumber(buildsDir);
+  const lastDownloaded: number = !isNaN(Number(since))
+    ? Number(since)
+    : await getLastDownloadedBuildNumber(buildsDir);
   const startingBuild: number = lastDownloaded ? lastDownloaded + 1 : 1;
   const startPage = Math.floor(startingBuild / pagelen) + 1;
   const endPage = Math.floor(totalBuilds / pagelen) + 1;
@@ -63,7 +69,7 @@ export default async function fetchBitbucketPipeline(
         let resJson = JSON.parse(res.body);
         let builds = resJson.values;
 
-        let writeFilePromises = builds.map(build => {
+        let writeFilePromises = builds.map((build) => {
           let filePath = path.join(buildsDir, `${build.build_number}.json`);
 
           if (

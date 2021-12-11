@@ -8,7 +8,7 @@ function calculateGroup(group) {
   let totalBuilds = group.length;
   let start = new Date(group[totalBuilds - 1].createdOn);
   let end = new Date(group[0].createdOn);
-  let durations = group.map(build => build.duration);
+  let durations = group.map((build) => build.duration);
   let buildDurationMean = math.getMean(durations);
   let buildPercentileMean = math.getPercentileMean(durations, 95);
   let longestBuild = builds.findLongest(group);
@@ -19,14 +19,14 @@ function calculateGroup(group) {
     end,
     buildDurationMean,
     buildPercentileMean,
-    longestBuild
+    longestBuild,
   };
 }
 
 function calculateRanges(ranges) {
-  return ranges.map(range => {
-    let result: {[key: string]: any} = {};
-    let groups = groupBy(range, build => build.result);
+  return ranges.map((range) => {
+    let result: { [key: string]: any } = {};
+    let groups = groupBy(range, (build) => build.result);
 
     result.ALL = calculateGroup(range);
     for (let groupName of Object.keys(groups)) {
@@ -46,11 +46,11 @@ export default async function success({
   result = "*",
   period = 1,
   last = 30,
-  json = false
+  json = false,
 }) {
   let history = await builds.getHistory(cwd, host, user, repo, {
     branch,
-    result
+    result,
   });
   let ranges = builds.toTimeRanges(history, { period, last });
   let results = calculateRanges(ranges);
@@ -66,7 +66,7 @@ export default async function success({
           "Total Builds",
           "Failed Builds",
           "Successful Builds",
-          ""
+          "",
         ],
         rows: results.map((range, index) => {
           const FAILED_BUILDS = range.FAILED ? range.FAILED.totalBuilds : 0;
@@ -85,9 +85,9 @@ export default async function success({
             FAILED_BUILDS + SUCCESSFUL_BUILDS,
             FAILED_BUILDS,
             SUCCESSFUL_BUILDS,
-            formatters.singleBar(SUCCESSFUL_BUILDS, FAILED_BUILDS)
+            formatters.singleBar(SUCCESSFUL_BUILDS, FAILED_BUILDS),
           ];
-        })
+        }),
       })
     );
   }

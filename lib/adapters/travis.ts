@@ -8,7 +8,7 @@ import { getLastDownloadedBuildNumber } from "../utils/builds";
 
 const RESULT_TO_STATUS = {
   "0": "SUCCESSFUL",
-  "1": "FAILED"
+  "1": "FAILED",
 };
 
 function toStandardBuildConfig(build) {
@@ -19,12 +19,17 @@ function toStandardBuildConfig(build) {
     duration: build.duration,
     result: RESULT_TO_STATUS[build.result] || "STOPPED",
     refType: build.event_type,
-    refName: build.branch
+    refName: build.branch,
   };
 }
 
 // Knowing which url to use can be a pain. It can change depending on a few things:
-function getTravisUrl(user: string, repo: string, apiVersion: number, auth: string) {
+function getTravisUrl(
+  user: string,
+  repo: string,
+  apiVersion: number,
+  auth: string
+) {
   // if looking for a public (open source) build, we use travis-ci.org
   // otherwise, we use travis-ci.com
   let baseUrl = auth
@@ -46,8 +51,8 @@ async function getTotalBuilds(user, repo, auth) {
   let url = getTravisUrl(user, repo, 3, auth);
   let res = await got(url, {
     headers: {
-      "Travis-API-Version": 3
-    }
+      "Travis-API-Version": 3,
+    },
   });
   let resJson = JSON.parse(res.body);
 
@@ -60,7 +65,7 @@ interface DownloadOptions {
   downloadHook?: Function;
   repo: string;
   since: number;
-  user: string
+  user: string;
 }
 
 export default async function fetchPipelines(
@@ -69,7 +74,9 @@ export default async function fetchPipelines(
 ) {
   const pageLen = 25;
   const limit = pLimit(concurrency); // limits the number of concurrent requests
-  let lastDownloaded = since ? since : await getLastDownloadedBuildNumber(buildsDir);
+  let lastDownloaded = since
+    ? since
+    : await getLastDownloadedBuildNumber(buildsDir);
 
   let totalBuilds = await getTotalBuilds(user, repo, auth);
   // "pages" move backwards, so by starting at offset 26 for example, we'll get builds 1-25
@@ -92,7 +99,7 @@ export default async function fetchPipelines(
       let res = await got(url);
       let builds = JSON.parse(res.body);
 
-      let fsPromises = builds.map(build => {
+      let fsPromises = builds.map((build) => {
         let stdBuild = toStandardBuildConfig(build);
 
         let filePath = path.join(buildsDir, `${stdBuild.id}.json`);

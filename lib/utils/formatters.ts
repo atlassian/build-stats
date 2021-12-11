@@ -29,9 +29,7 @@ export function bar(value, min, max, threshold) {
 export function singleBar(greenValue, redValue) {
   let bar = "";
   let distance = greenValue + redValue;
-  let greenLength = Math.ceil(
-    (GRAPH_MAX_LENGTH / distance) * greenValue
-  );
+  let greenLength = Math.ceil((GRAPH_MAX_LENGTH / distance) * greenValue);
   let redLength = Math.ceil((GRAPH_MAX_LENGTH / distance) * redValue);
 
   if (greenLength + redLength > GRAPH_MAX_LENGTH) {

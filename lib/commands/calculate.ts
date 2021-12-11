@@ -8,7 +8,7 @@ function calculateGroup(group) {
   let totalBuilds = group.length;
   let start = new Date(group[totalBuilds - 1].createdOn);
   let end = new Date(group[0].createdOn);
-  let durations = group.map(build => build.duration);
+  let durations = group.map((build) => build.duration);
   let buildDurationMean = math.getMean(durations);
   let buildPercentileMean = math.getPercentileMean(durations, 95);
   let longestBuild = builds.findLongest(group);
@@ -19,14 +19,14 @@ function calculateGroup(group) {
     end,
     buildDurationMean,
     buildPercentileMean,
-    longestBuild
+    longestBuild,
   };
 }
 
 function calculateRanges(ranges) {
-  return ranges.map(range => {
-    let result: {[key: string]: any} = {};
-    let groups = groupBy(range, build => build.result);
+  return ranges.map((range) => {
+    let result: { [key: string]: any } = {};
+    let groups = groupBy(range, (build) => build.result);
 
     result.ALL = calculateGroup(range);
     for (let groupName of Object.keys(groups)) {
@@ -47,18 +47,18 @@ export default async function calculate({
   period = 1,
   last = 30,
   threshold,
-  json = false
+  json = false,
 }) {
   let history = await builds.getHistory(cwd, host, user, repo, {
     branch,
-    result
+    result,
   });
   let ranges = builds.toTimeRanges(history, { period, last });
   let results = calculateRanges(ranges);
 
-  let successfulRanges = results.filter(range => !!range.SUCCESSFUL);
+  let successfulRanges = results.filter((range) => !!range.SUCCESSFUL);
   let buildPercentileMean = successfulRanges.map(
-    range => range.SUCCESSFUL.buildPercentileMean
+    (range) => range.SUCCESSFUL.buildPercentileMean
   );
   let { min, max } = math.getMinMax(buildPercentileMean);
   if (threshold == undefined) {
@@ -77,7 +77,7 @@ export default async function calculate({
           "Mean",
           "Mean (95%)",
           "Longest",
-          `Build Time ( threshold: ${threshold} mins )`
+          `Build Time ( threshold: ${threshold} mins )`,
         ],
         rows: successfulRanges.map((range, index) => {
           return [
@@ -94,9 +94,9 @@ export default async function calculate({
               min,
               max,
               threshold
-            )
+            ),
           ];
-        })
+        }),
       })
     );
   }

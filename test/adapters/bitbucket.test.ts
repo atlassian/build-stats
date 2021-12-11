@@ -1,4 +1,4 @@
-import test from 'ava';
-import bitbucket from '../../lib/adapters/bitbucket';
+import test from "ava";
+import bitbucket from "../../lib/adapters/bitbucket";
 
-test.todo('bitbucket.download()');
+test.todo("bitbucket.download()");

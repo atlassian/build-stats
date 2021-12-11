@@ -1,4 +1,4 @@
-import test from 'ava';
-import history from '../../lib/commands/history';
+import test from "ava";
+import history from "../../lib/commands/history";
 
-test.todo('calculate()');
+test.todo("calculate()");

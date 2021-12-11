@@ -1,5 +1,5 @@
-import * as builds from '../utils/builds';
-import adapters from '../adapters/index';
+import * as builds from "../utils/builds";
+import adapters from "../adapters/index";
 
 interface DownloadArgs {
   cwd: string;
@@ -8,7 +8,7 @@ interface DownloadArgs {
   repo: string;
   auth?: string;
   concurrency?: number;
-  since?: number
+  since?: number;
 }
 
 export default async function download(
@@ -25,7 +25,7 @@ export default async function download(
       downloadHook,
       repo,
       since,
-      user
+      user,
     });
   } else {
     throw new Error(`Unknown CI service: ${host}`);

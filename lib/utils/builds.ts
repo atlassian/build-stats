@@ -26,7 +26,7 @@ export async function getHistory(cwd, host, user, repo, filters) {
     return +new Date(b.createdOn) - +new Date(a.createdOn);
   });
 
-  let filtered = builds.filter(build => {
+  let filtered = builds.filter((build) => {
     if (filters.branch !== "*") {
       if (build.refType !== "branch" && build.refType !== "push") return false;
       if (filters.branch.split(",").indexOf(build.refName) < 0) return false;
@@ -79,9 +79,9 @@ export function toTimeRanges(builds, { period, last }) {
 export async function getLastDownloadedBuildNumber(buildsDir) {
   const currentlyDownloadedBuilds = await fs.readDir(buildsDir);
   const lastDownloadedBuildNumber = currentlyDownloadedBuilds
-    .filter(file => file.match(/^.+?\.json$/))
-    .map(file => file.replace(".json", ""))
-    .map(numStr => parseInt(numStr, 10))
+    .filter((file) => file.match(/^.+?\.json$/))
+    .map((file) => file.replace(".json", ""))
+    .map((numStr) => parseInt(numStr, 10))
     .sort((a, b) => a - b)
     .pop();
 
@@ -93,6 +93,5 @@ module.exports = {
   getHistory,
   getLastDownloadedBuildNumber,
   findLongest,
-  toTimeRanges
+  toTimeRanges,
 };
-

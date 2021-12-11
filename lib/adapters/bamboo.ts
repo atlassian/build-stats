@@ -4,9 +4,7 @@ import got from "got";
 import ora from "ora";
 import path from "path";
 import * as fs from "../utils/fs";
-import {
-  getLastDownloadedBuildNumber
-} from "../utils/builds";
+import { getLastDownloadedBuildNumber } from "../utils/builds";
 
 /**
  * URL for build -> curl --user <userName>:<password> https://<url-to-bamboo>/rest/api/latest/result/<ProjectKey-<BuildKey>-latest.json
@@ -19,7 +17,7 @@ function toStandardBuildConfig(build) {
     duration: build.buildDurationInSeconds,
     result: build.buildState && build.buildState.toUpperCase(),
     refType: "not available",
-    refName: "master"
+    refName: "master",
   };
 }
 
@@ -31,7 +29,7 @@ async function getTotalBuilds(bambooUrl, planKey, auth) {
   // const bambooLatestBuild = `${bambooBuildUrl}.json?max-result=0`;
   const bambooLatestBuild = `${bambooBuildUrl}-latest.json`;
   let res = await got(bambooLatestBuild, {
-    auth
+    auth,
   });
   let resJson = JSON.parse(res.body);
   return resJson.buildNumber;
@@ -60,10 +58,7 @@ export default async function bambooBuilds(
    */
 
   // Get data for all the available buils
-  let urlGetAllBuilds = `${bambooApiUrl(
-    bambooUrl,
-    planKey
-  )}.json?max-result=0`;
+  let urlGetAllBuilds = `${bambooApiUrl(bambooUrl, planKey)}.json?max-result=0`;
 
   let res = await got(urlGetAllBuilds, { auth });
   let resJson = JSON.parse(res.body);
@@ -73,7 +68,7 @@ export default async function bambooBuilds(
     limit(async () => {
       let build = toStandardBuildConfig(buildData);
       let filePath = path.join(buildsDir, `${build.id}.json`);
-  
+
       downloaded += 1;
       spinner.text = chalk`Downloaded data for {green ${downloaded}} builds of {green ${totalBuilds}} builds`;
       downloadHook && downloadHook(downloaded, totalBuilds);

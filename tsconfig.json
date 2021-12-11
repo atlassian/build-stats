@@ -1,16 +1,11 @@
 {
-	"compilerOptions": {
-		"allowJs": true,
-		"outDir": "dist",
-		"module": "commonJs",
-		"target": "es6",
-		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true
-	},
-	"exclude": [
-		"__fixtures__",
-		"dist",
-		"node_modules",
-		"test"
-	]
+  "compilerOptions": {
+    "allowJs": true,
+    "outDir": "dist",
+    "module": "commonJs",
+    "target": "es6",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "exclude": ["__fixtures__", "dist", "node_modules", "test"]
 }

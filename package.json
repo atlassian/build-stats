@@ -49,6 +49,7 @@
     "got": "^8.0.1",
     "left-pad": "^1.2.0",
     "lodash.groupby": "^4.6.0",
+    "lodash.pick": "^4.4.0",
     "meow": "^6.0.0",
     "mkdirp": "^0.5.1",
     "ora": "^1.4.0",
@@ -61,7 +62,7 @@
     "@types/node": "^16.11.12",
     "ava": "^3.15.0",
     "fixturez": "^1.0.1",
-    "prettier": "1.19.1",
+    "prettier": "2.5.1",
     "sinon": "^7.5.0",
     "ts-node": "^8.6.2",
     "typescript": "3.9.10"
