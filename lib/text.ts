@@ -5,22 +5,22 @@ export default {
         $ build-stats <service>:<user>/<repo> <command> [...opts]
 
     	Commands
-        download         Download history for a repository
+        cache            Outputs the directory where data will be cached
         calculate        Calculate average build time and success rates over time
+        clean            Delete the downloaded history of repository
+        download         Download history for a repository
         history          List individual builds
         success          Get quick stats of number of success and failed builds
-        clean            Delete the downloaded history of repository
-        cache            Outputs the directory where data will be cached
 
     	Options
         --auth        [authentication]  (download)  Authentication to access private repo
+        --branch      [name]            (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
         --concurrency [number]          (download)  How many parallel downloads should be used when downloading data (Default: 10)
+        --last        [count]           (calculate) How many periods to calculate back to (Default: 30)
+        --period      [days]            (calculate) How many days in a time period to calculate the means for (Default: 1)
+        --result      [name]            (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
         --since       [buildNumber]     (download)  Overrides the normal logic of which builds to download data for.
                                                     This should only be required in debugging/fixing errors (Default: last downloaded build)
-        --branch      [name]            (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
-        --result      [name]            (calculate/history) Which branch(es) to display (Comma-separated list) (Default: *)
-        --period      [days]            (calculate) How many days in a time period to calculate the means for (Default: 1)
-        --last        [count]           (calculate) How many periods to calculate back to (Default: 30)
         --threshold   [time]            (calculate) Time under which builds graph is shown in green color. Default is mean of all the builds in that period
 
     	Services
