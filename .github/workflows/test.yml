@@ -27,13 +27,10 @@ jobs:
           install-command: install --immutable --silent
 
       - name: Check types
-        uses: borales/actions-yarn@v2.3.0
         run: typecheck
 
       - name: Build
-        uses: borales/actions-yarn@v2.3.0
         run: build
 
       - name: Jest run
-        uses: borales/actions-yarn@v2.3.0
         run: test
