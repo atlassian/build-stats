@@ -1,0 +1,36 @@
+name: Test
+on:
+  push:
+    branches:
+      - "master"
+  pull_request: {}
+jobs:
+  build:
+    name: Build, lint, and test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["12", "14", "16"]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Use Node ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install deps and build (with cache)
+        uses: bahmutov/npm-install@v1
+        with:
+          install-command: yarn --immutable --silent
+
+      - name: Check types
+        run: yarn typecheck
+
+      - name: Build
+        run: yarn build
+
+      - name: Jest run
+        run: yarn test
