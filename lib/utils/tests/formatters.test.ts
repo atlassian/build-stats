@@ -1,5 +1,4 @@
-import test from "ava";
-import * as formatters from "../../lib/utils/formatters";
+import * as formatters from "../formatters";
 
 test.todo("formatters.id");
 test.todo("formatters.duration");

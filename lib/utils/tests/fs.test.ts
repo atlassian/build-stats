@@ -1,5 +1,4 @@
-import test from "ava";
-import * as fs from "../../lib/utils/fs";
+import * as fs from "../fs";
 
 test.todo("fs.mkdir");
 test.todo("fs.readDir");

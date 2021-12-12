@@ -1,0 +1,18 @@
+{
+  "values": [
+    {
+      "build_number": 1,
+      "trigger": {},
+      "target": {},
+      "state": {
+        "name": "COMPLETED",
+        "result": {
+          "name": "SUCCESSFUL"
+        }
+      },
+      "uuid": 1,
+      "created_on": "",
+      "duration_in_seconds": 17
+    }
+  ]
+}

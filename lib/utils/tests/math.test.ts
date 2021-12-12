@@ -1,4 +1,4 @@
-import * as math from "../../lib/utils/math";
+import * as math from "../math";
 
 test("math.getMinMax()", () => {
   expect(math.getMinMax([1, 2, 3])).toEqual({ min: 1, max: 3 });
