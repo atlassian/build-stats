@@ -80,5 +80,48 @@ describe("bitbucket", () => {
         result: "SUCCESSFUL",
       });
     });
+
+    it("should call the downloadHook with the builds", async () => {
+      const downloadHookMock = jest.fn();
+      const testUser = "test-user";
+      const testRepo = "test-repo";
+      const tempDir = f.temp();
+      const path_to_pipelines_response = f.find(
+        "bitbucket_pipeline_response.json"
+      );
+      const pipeline_response = await readFile(
+        path_to_pipelines_response,
+        "utf-8"
+      );
+      got.mockImplementation(async (url) => {
+        if (url === `${BITBUCKET_API}/${testUser}/${testRepo}/pipelines/`)
+          return Promise.resolve({ body: JSON.stringify({ size: 101 }) });
+        return {
+          body: JSON.stringify(JSON.parse(pipeline_response)),
+        };
+      });
+
+      await fetchBitbucketPipeline(tempDir, {
+        concurrency: 1,
+        repo: testRepo,
+        since: undefined,
+        user: testUser,
+        downloadHook: downloadHookMock,
+      });
+
+      expect(downloadHookMock).toHaveBeenCalledTimes(2);
+
+      expect(downloadHookMock).toHaveBeenCalledWith(
+        JSON.parse(pipeline_response).values,
+        1,
+        101
+      );
+
+      expect(downloadHookMock).toHaveBeenCalledWith(
+        JSON.parse(pipeline_response).values,
+        2,
+        101
+      );
+    });
   });
 });

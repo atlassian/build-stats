@@ -87,7 +87,7 @@ export default async function fetchBitbucketPipeline(
 
         downloaded += builds.length;
         spinner.text = chalk`Downloaded data for {green ${downloaded}} builds of {green ${totalBuilds}} builds`;
-        downloadHook && downloadHook(downloaded, totalBuilds);
+        downloadHook && downloadHook(builds, downloaded, totalBuilds);
       })
     );
   }
