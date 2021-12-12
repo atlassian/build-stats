@@ -22,15 +22,18 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Install deps and build (with cache)
-        uses: bahmutov/npm-install@v1
+        uses: borales/actions-yarn@v2.3.0
         with:
-          install-command: yarn --immutable --silent
+          install-command: install --immutable --silent
 
       - name: Check types
-        run: yarn typecheck
+        uses: borales/actions-yarn@v2.3.0
+        run: typecheck
 
       - name: Build
-        run: yarn build
+        uses: borales/actions-yarn@v2.3.0
+        run: build
 
       - name: Jest run
-        run: yarn test
+        uses: borales/actions-yarn@v2.3.0
+        run: test
