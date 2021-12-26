@@ -27,10 +27,10 @@ jobs:
           install-command: install --immutable --silent
 
       - name: Check types
-        run: typecheck
+        run: yarn typecheck
 
       - name: Build
-        run: build
+        run: yarn build
 
       - name: Jest run
-        run: test
+        run: yarn test
