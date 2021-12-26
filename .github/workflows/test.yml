@@ -24,13 +24,19 @@ jobs:
       - name: Install deps and build (with cache)
         uses: borales/actions-yarn@v2.3.0
         with:
-          install-command: install --immutable --silent
+          cmd: install --immutable --silent
 
       - name: Check types
-        run: yarn typecheck
+        uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: typecheck
 
       - name: Build
-        run: yarn build
+        uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: build
 
       - name: Jest run
-        run: yarn test
+        uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: test
