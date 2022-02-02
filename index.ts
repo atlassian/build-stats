@@ -7,13 +7,22 @@ import { default as success } from "./lib/commands/success";
 import { flagsEnum, MainTypes } from "./types";
 import pick from "lodash.pick";
 
+export const SUPPORTED_COMMANDS = [
+  'cache',
+  'calculate',
+  'clean',
+  'download',
+  'history',
+  'success'
+];
+
 export default async function main({
   command,
   repoSlug,
   flags,
   cwd,
 }: MainTypes) {
-  let [, host, user, repo]: string[] = repoSlug;
+  let [host, user, repo]: string[] = repoSlug;
 
   switch (command) {
     case "download":
@@ -87,7 +96,7 @@ export default async function main({
       break;
     default:
       throw new Error(
-        `Unknown command "${command}", should be "download", "calculate", "history", "success", "clean", "cache"`
+        `Unknown command "${command}", should be ${SUPPORTED_COMMANDS.join(", ")}.`
       );
   }
 }

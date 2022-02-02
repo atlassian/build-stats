@@ -4,3 +4,5 @@ node_modules
 .data
 __fixtures__/**/.data
 dist
+.idea
+build-stats.iml
