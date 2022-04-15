@@ -1,3 +1,3 @@
-import history from "../history";
+import history from '../history';
 
-test.todo("calculate()");
+test.todo('calculate()');

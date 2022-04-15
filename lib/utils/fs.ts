@@ -1,6 +1,6 @@
-const fs = require("fs");
-const mkdirpFn = require("mkdirp");
-const { promisify } = require("util");
+const fs = require('fs');
+const mkdirpFn = require('mkdirp');
+const { promisify } = require('util');
 
 export const mkdir = promisify(fs.mkdir);
 export const mkdirp = promisify(mkdirpFn);

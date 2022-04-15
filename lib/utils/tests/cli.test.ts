@@ -1,4 +1,4 @@
-import * as cli from "../cli";
+import * as cli from '../cli';
 
-test.todo("cli.table");
-test.todo("cli.pager");
+test.todo('cli.table');
+test.todo('cli.pager');

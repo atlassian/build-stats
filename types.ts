@@ -24,13 +24,13 @@ export interface MainTypes {
 }
 
 export enum flagsEnum {
-  auth = "auth",
-  branch = "branch",
-  concurrency = "concurrency",
-  json = "json",
-  last = "last",
-  period = "period",
-  result = "result",
-  since = "since",
-  threshold = "threshold",
+  auth = 'auth',
+  branch = 'branch',
+  concurrency = 'concurrency',
+  json = 'json',
+  last = 'last',
+  period = 'period',
+  result = 'result',
+  since = 'since',
+  threshold = 'threshold',
 }

@@ -1,11 +1,11 @@
-import * as fs from "./fs";
-import path from "path";
-import * as times from "./times";
+import * as fs from './fs';
+import path from 'path';
+import * as times from './times';
 
-const defaultBuildDir = path.join(__dirname, "../..");
+const defaultBuildDir = path.join(__dirname, '../..');
 
 export async function getBuildDir(cwd = defaultBuildDir, host, user, repo) {
-  const buildsDir = path.join(cwd, ".data", host, user, repo, "builds");
+  const buildsDir = path.join(cwd, '.data', host, user, repo, 'builds');
   await fs.mkdirp(buildsDir);
   return buildsDir;
 }
@@ -27,13 +27,13 @@ export async function getHistory(cwd, host, user, repo, filters) {
   });
 
   let filtered = builds.filter((build) => {
-    if (filters.branch !== "*") {
-      if (build.refType !== "branch" && build.refType !== "push") return false;
-      if (filters.branch.split(",").indexOf(build.refName) < 0) return false;
+    if (filters.branch !== '*') {
+      if (build.refType !== 'branch' && build.refType !== 'push') return false;
+      if (filters.branch.split(',').indexOf(build.refName) < 0) return false;
     }
-    if (filters.result !== "*") {
-      if (build.refType !== "branch" && build.refType !== "push") return false;
-      if (filters.result.split(",").indexOf(build.result) < 0) return false;
+    if (filters.result !== '*') {
+      if (build.refType !== 'branch' && build.refType !== 'push') return false;
+      if (filters.result.split(',').indexOf(build.result) < 0) return false;
     }
     return true;
   });
@@ -63,10 +63,7 @@ export function toTimeRanges(builds, { period, last }) {
 
     range.push(first);
 
-    while (
-      queue[0] &&
-      times.withinDays(first.createdOn, queue[0].createdOn, period)
-    ) {
+    while (queue[0] && times.withinDays(first.createdOn, queue[0].createdOn, period)) {
       range.push(queue.shift());
     }
 
@@ -80,7 +77,7 @@ export async function getLastDownloadedBuildNumber(buildsDir) {
   const currentlyDownloadedBuilds = await fs.readDir(buildsDir);
   const lastDownloadedBuildNumber = currentlyDownloadedBuilds
     .filter((file) => file.match(/^.+?\.json$/))
-    .map((file) => file.replace(".json", ""))
+    .map((file) => file.replace('.json', ''))
     .map((numStr) => parseInt(numStr, 10))
     .sort((a, b) => a - b)
     .pop();

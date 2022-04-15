@@ -1,7 +1,18 @@
-import * as builds from "../utils/builds";
-import * as math from "../utils/math";
-import * as formatters from "../utils/formatters";
-import * as cli from "../utils/cli";
+import * as builds from '../utils/builds';
+import * as math from '../utils/math';
+import * as formatters from '../utils/formatters';
+import * as cli from '../utils/cli';
+
+type historyParams = {
+  cwd: string;
+  host: string;
+  user: string;
+  repo: string;
+  threshold?: number;
+  branch?: string;
+  result?: string;
+  json?: boolean;
+};
 
 export default async function history({
   cwd,
@@ -9,10 +20,10 @@ export default async function history({
   user,
   repo,
   threshold,
-  branch = "*",
-  result = "*",
+  branch = '*',
+  result = '*',
   json = false,
-}) {
+}: historyParams) {
   let history = await builds.getHistory(cwd, host, user, repo, {
     branch,
     result,
@@ -20,7 +31,7 @@ export default async function history({
   let durations = history.map((build) => build.duration);
   let { min, max } = math.getMinMax(durations);
   if (threshold == undefined) {
-    threshold = (math.getMean([min, max]) / 60).toPrecision(2);
+    threshold = Number((math.getMean([min, max]) / 60).toPrecision(2));
   }
 
   if (json) {
@@ -28,14 +39,7 @@ export default async function history({
   } else {
     cli.pager(
       cli.table({
-        columns: [
-          "Build",
-          "Date",
-          "Duration",
-          "Result",
-          `Build Time (Threshold: ${threshold} mins)`,
-          "Trigger",
-        ],
+        columns: ['Build', 'Date', 'Duration', 'Result', `Build Time (Threshold: ${threshold} mins)`, 'Trigger'],
         rows: history.map((item) => {
           return [
             formatters.id(item.id),

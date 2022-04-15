@@ -1,6 +1,6 @@
-import Table from "cli-table";
-import stringToStream from "string-to-stream";
-import defaultPager from "default-pager";
+import Table from 'cli-table';
+import stringToStream from 'string-to-stream';
+import defaultPager from 'default-pager';
 
 export function table({ columns, rows }) {
   let table = new Table({ head: columns });

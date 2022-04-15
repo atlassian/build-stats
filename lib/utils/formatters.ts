@@ -1,14 +1,14 @@
-import leftPad from "left-pad";
-import chalk from "chalk";
-import format from "date-fns/format";
-import { GRAPH_MAX_LENGTH } from "../constants";
+import leftPad from 'left-pad';
+import chalk from 'chalk';
+import format from 'date-fns/format';
+import { GRAPH_MAX_LENGTH } from '../constants';
 
 export function id(num) {
   return `#${num}`;
 }
 
 export function duration(dur) {
-  return `${leftPad((dur / 60).toFixed(2), 8, "")} min`;
+  return `${leftPad((dur / 60).toFixed(2), 8, '')} min`;
 }
 
 export function bar(value, min, max, threshold) {
@@ -18,7 +18,7 @@ export function bar(value, min, max, threshold) {
   distance = Math.max(1, distance);
   let unit = GRAPH_MAX_LENGTH / distance;
   let length = Math.ceil((value - min) * unit);
-  let bar = "█" + new Array(length).join("█") + new Array(15).join(" ");
+  let bar = '█' + new Array(length).join('█') + new Array(15).join(' ');
 
   if (value > thresholdInSeconds) {
     return chalk.red(bar);
@@ -27,7 +27,7 @@ export function bar(value, min, max, threshold) {
 }
 
 export function singleBar(greenValue, redValue) {
-  let bar = "";
+  let bar = '';
   let distance = greenValue + redValue;
   let greenLength = Math.ceil((GRAPH_MAX_LENGTH / distance) * greenValue);
   let redLength = Math.ceil((GRAPH_MAX_LENGTH / distance) * redValue);
@@ -44,24 +44,24 @@ export function singleBar(greenValue, redValue) {
     greenLength = greenValue;
   }
 
-  bar += chalk.red(new Array(redLength + 1).join("█"));
-  bar += chalk.green(new Array(greenLength + 1).join("█"));
+  bar += chalk.red(new Array(redLength + 1).join('█'));
+  bar += chalk.green(new Array(greenLength + 1).join('█'));
 
-  return bar + new Array(15).join(" ");
+  return bar + new Array(15).join(' ');
 }
 
 export function result(res) {
-  if (res === "SUCCESSFUL") return chalk.green(res);
-  if (res === "FAILED") return chalk.red(res);
+  if (res === 'SUCCESSFUL') return chalk.green(res);
+  if (res === 'FAILED') return chalk.red(res);
   return chalk.yellow(res);
 }
 
 export function date(dateStr) {
-  return format(new Date(dateStr), "ddd, DD/MM/YYYY HH:mm:ss");
+  return format(new Date(dateStr), 'ddd, DD/MM/YYYY HH:mm:ss');
 }
 
 export function dateRange(start, end) {
-  return format(start, "DD/MM/YYYY") + "-" + format(end, "DD/MM/YYYY");
+  return format(start, 'DD/MM/YYYY') + '-' + format(end, 'DD/MM/YYYY');
 }
 
 export function ref(refType, refName) {

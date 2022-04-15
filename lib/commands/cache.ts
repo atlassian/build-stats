@@ -1,4 +1,4 @@
-import { getBuildDir } from "../utils/builds";
+import { getBuildDir } from '../utils/builds';
 
 export default async function cache({ cwd, host, user, repo }) {
   const cacheDir = await getBuildDir(cwd, host, user, repo);
