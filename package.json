@@ -41,7 +41,7 @@
     "left-pad": "^1.2.0",
     "lodash.groupby": "^4.6.0",
     "lodash.pick": "^4.4.0",
-    "meow": "^v9.0.0",
+    "meow": "^10.0.0",
     "mkdirp": "^0.5.1",
     "ora": "^5.4.1",
     "p-limit": "^2.0.0",
