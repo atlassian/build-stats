@@ -1,44 +1,28 @@
-import { default as cache } from "./lib/commands/cache";
-import { default as calculate } from "./lib/commands/calculate";
-import { default as clean } from "./lib/commands/clean";
-import { default as download } from "./lib/commands/download";
-import { default as history } from "./lib/commands/history";
-import { default as success } from "./lib/commands/success";
-import { flagsEnum, MainTypes } from "./types";
-import pick from "lodash.pick";
+import { default as cache } from './lib/commands/cache';
+import { default as calculate } from './lib/commands/calculate';
+import { default as clean } from './lib/commands/clean';
+import { default as download } from './lib/commands/download';
+import { default as history } from './lib/commands/history';
+import { default as success } from './lib/commands/success';
+import { flagsEnum, MainTypes } from './types';
+import pick from 'lodash.pick';
 
-export const SUPPORTED_COMMANDS = [
-  'cache',
-  'calculate',
-  'clean',
-  'download',
-  'history',
-  'success'
-];
+export const SUPPORTED_COMMANDS = ['cache', 'calculate', 'clean', 'download', 'history', 'success'];
 
-export default async function main({
-  command,
-  repoSlug,
-  flags,
-  cwd,
-}: MainTypes) {
+export default async function main({ command, repoSlug, flags, cwd }: MainTypes) {
   let [host, user, repo]: string[] = repoSlug;
 
   switch (command) {
-    case "download":
+    case 'download':
       await download({
         cwd,
         host,
         user,
         repo,
-        ...pick(flags, [
-          flagsEnum.auth,
-          flagsEnum.concurrency,
-          flagsEnum.since,
-        ]),
+        ...pick(flags, [flagsEnum.auth, flagsEnum.concurrency, flagsEnum.since]),
       });
       break;
-    case "calculate":
+    case 'calculate':
       await calculate({
         cwd,
         host,
@@ -54,36 +38,25 @@ export default async function main({
         ]),
       });
       break;
-    case "history":
+    case 'history':
       await history({
         cwd,
         host,
         user,
         repo,
-        ...pick(flags, [
-          flagsEnum.branch,
-          flagsEnum.result,
-          flagsEnum.threshold,
-          flagsEnum.json,
-        ]),
+        ...pick(flags, [flagsEnum.branch, flagsEnum.result, flagsEnum.threshold, flagsEnum.json]),
       });
       break;
-    case "success":
+    case 'success':
       await success({
         cwd,
         host,
         user,
         repo,
-        ...pick(flags, [
-          flagsEnum.branch,
-          flagsEnum.result,
-          flagsEnum.period,
-          flagsEnum.last,
-          flagsEnum.json,
-        ]),
+        ...pick(flags, [flagsEnum.branch, flagsEnum.result, flagsEnum.period, flagsEnum.last, flagsEnum.json]),
       });
       break;
-    case "clean":
+    case 'clean':
       await clean({
         cwd,
         host,
@@ -91,13 +64,11 @@ export default async function main({
         repo,
       });
       break;
-    case "cache":
+    case 'cache':
       await cache({ cwd, host, user, repo });
       break;
     default:
-      throw new Error(
-        `Unknown command "${command}", should be ${SUPPORTED_COMMANDS.join(", ")}.`
-      );
+      throw new Error(`Unknown command "${command}", should be ${SUPPORTED_COMMANDS.join(', ')}.`);
   }
 }
 

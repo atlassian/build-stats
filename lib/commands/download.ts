@@ -1,5 +1,5 @@
-import * as builds from "../utils/builds";
-import adapters from "../adapters/index";
+import * as builds from '../utils/builds';
+import adapters from '../adapters/index';
 
 interface DownloadArgs {
   cwd: string;

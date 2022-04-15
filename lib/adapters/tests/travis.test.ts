@@ -1,3 +1,3 @@
-import travis from "../travis";
+import travis from '../travis';
 
-test.todo("travis.download()");
+test.todo('travis.download()');

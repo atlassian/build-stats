@@ -1,8 +1,8 @@
-import groupBy from "lodash.groupby";
-import * as cli from "../utils/cli";
-import * as math from "../utils/math";
-import * as formatters from "../utils/formatters";
-import * as builds from "../utils/builds";
+import groupBy from 'lodash.groupby';
+import * as cli from '../utils/cli';
+import * as math from '../utils/math';
+import * as formatters from '../utils/formatters';
+import * as builds from '../utils/builds';
 
 function calculateGroup(group) {
   let totalBuilds = group.length;
@@ -42,8 +42,8 @@ export default async function success({
   host,
   user,
   repo,
-  branch = "*",
-  result = "*",
+  branch = '*',
+  result = '*',
   period = 1,
   last = 30,
   json = false,
@@ -60,25 +60,12 @@ export default async function success({
   } else {
     console.log(
       cli.table({
-        columns: [
-          "",
-          "Date Range (DD/MM/YYY)",
-          "Total Builds",
-          "Failed Builds",
-          "Successful Builds",
-          "",
-        ],
+        columns: ['', 'Date Range (DD/MM/YYY)', 'Total Builds', 'Failed Builds', 'Successful Builds', ''],
         rows: results.map((range, index) => {
           const FAILED_BUILDS = range.FAILED ? range.FAILED.totalBuilds : 0;
-          const SUCCESSFUL_BUILDS = range.SUCCESSFUL
-            ? range.SUCCESSFUL.totalBuilds
-            : 0;
-          const FAILED_BUILDS_MEAN = range.FAILED
-            ? range.FAILED.buildPercentileMean
-            : 0;
-          const SUCCESSFUL_BUILDS_MEAN = range.SUCCESSFUL
-            ? range.SUCCESSFUL.buildPercentileMean
-            : 0;
+          const SUCCESSFUL_BUILDS = range.SUCCESSFUL ? range.SUCCESSFUL.totalBuilds : 0;
+          const FAILED_BUILDS_MEAN = range.FAILED ? range.FAILED.buildPercentileMean : 0;
+          const SUCCESSFUL_BUILDS_MEAN = range.SUCCESSFUL ? range.SUCCESSFUL.buildPercentileMean : 0;
           return [
             index + 1,
             formatters.dateRange(range.ALL.start, range.ALL.end),

@@ -1,10 +1,10 @@
-import chalk from "chalk";
-import pLimit from "p-limit";
-import got from "got";
-import ora from "ora";
-import path from "path";
-import { getLastDownloadedBuildNumber } from "../utils/builds";
-import * as fs from "../utils/fs";
+import chalk from 'chalk';
+import pLimit from 'p-limit';
+import got from 'got';
+import ora from 'ora';
+import path from 'path';
+import { getLastDownloadedBuildNumber } from '../utils/builds';
+import * as fs from '../utils/fs';
 
 const getBaseUrl = (user: string, repo: string) =>
   `https://api.bitbucket.org/2.0/repositories/${user}/${repo}/pipelines/`;
@@ -19,11 +19,7 @@ const toStandardBuildConfig = (build) => ({
   refName: build.target.ref_name,
 });
 
-export async function getTotalBuilds(
-  user: string,
-  repo: string,
-  { auth }: { auth?: string }
-): Promise<number> {
+export async function getTotalBuilds(user: string, repo: string, { auth }: { auth?: string }): Promise<number> {
   let res = await got(getBaseUrl(user, repo), { auth });
   let resJson = JSON.parse(res.body);
   return resJson.size;
@@ -43,12 +39,10 @@ export default async function fetchBitbucketPipeline(
   { auth, concurrency, downloadHook, repo, since, user }: DownloadOptions
 ) {
   const totalBuilds: number = await getTotalBuilds(user, repo, { auth });
-  const spinner = ora().start("Initializing download");
+  const spinner = ora().start('Initializing download');
   const pagelen = 100;
   const limit = pLimit(concurrency); // limits the number of concurrent requests
-  const lastDownloaded: number = !isNaN(Number(since))
-    ? Number(since)
-    : await getLastDownloadedBuildNumber(buildsDir);
+  const lastDownloaded: number = !isNaN(Number(since)) ? Number(since) : await getLastDownloadedBuildNumber(buildsDir);
   const startingBuild: number = lastDownloaded ? lastDownloaded + 1 : 1;
   const startPage = Math.floor(startingBuild / pagelen) + 1;
   const endPage = Math.floor(totalBuilds / pagelen) + 1;
@@ -56,13 +50,10 @@ export default async function fetchBitbucketPipeline(
   let downloaded = startingBuild - 1;
   let requestPromises = [];
 
-  spinner.text = "Starting download";
+  spinner.text = 'Starting download';
 
   for (let page = startPage; page <= endPage; page++) {
-    let url = `${getBaseUrl(
-      user,
-      repo
-    )}?pagelen=${pagelen}&page=${page}&sort=created_on`;
+    let url = `${getBaseUrl(user, repo)}?pagelen=${pagelen}&page=${page}&sort=created_on`;
     requestPromises.push(
       limit(async () => {
         let res = await got(url, { auth });
@@ -72,10 +63,7 @@ export default async function fetchBitbucketPipeline(
         let writeFilePromises = builds.map((build) => {
           let filePath = path.join(buildsDir, `${build.build_number}.json`);
 
-          if (
-            build.state.name !== "COMPLETED" ||
-            build.trigger.name === "SCHEDULE"
-          ) {
+          if (build.state.name !== 'COMPLETED' || build.trigger.name === 'SCHEDULE') {
             return Promise.resolve();
           }
           build = toStandardBuildConfig(build);
@@ -94,7 +82,5 @@ export default async function fetchBitbucketPipeline(
 
   await Promise.all(requestPromises);
 
-  spinner.succeed(
-    chalk`Download completed. Total Builds: {green ${totalBuilds}}`
-  );
+  spinner.succeed(chalk`Download completed. Total Builds: {green ${totalBuilds}}`);
 }

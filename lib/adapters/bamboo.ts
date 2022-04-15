@@ -1,10 +1,10 @@
-import chalk from "chalk";
-import pLimit from "p-limit";
-import got from "got";
-import ora from "ora";
-import path from "path";
-import * as fs from "../utils/fs";
-import { getLastDownloadedBuildNumber } from "../utils/builds";
+import chalk from 'chalk';
+import pLimit from 'p-limit';
+import got from 'got';
+import ora from 'ora';
+import path from 'path';
+import * as fs from '../utils/fs';
+import { getLastDownloadedBuildNumber } from '../utils/builds';
 
 /**
  * URL for build -> curl --user <userName>:<password> https://<url-to-bamboo>/rest/api/latest/result/<ProjectKey-<BuildKey>-latest.json
@@ -16,13 +16,12 @@ function toStandardBuildConfig(build) {
     createdOn: build.buildStartedTime,
     duration: build.buildDurationInSeconds,
     result: build.buildState && build.buildState.toUpperCase(),
-    refType: "not available",
-    refName: "master",
+    refType: 'not available',
+    refName: 'master',
   };
 }
 
-const bambooApiUrl = (bambooUrl, planKey) =>
-  `https://${bambooUrl}/rest/api/latest/result/${planKey}`;
+const bambooApiUrl = (bambooUrl, planKey) => `https://${bambooUrl}/rest/api/latest/result/${planKey}`;
 
 async function getTotalBuilds(bambooUrl, planKey, auth) {
   const bambooBuildUrl = bambooApiUrl(bambooUrl, planKey);
@@ -39,7 +38,7 @@ export default async function bambooBuilds(
   buildsDir,
   { auth, concurrency, downloadHook, repo: planKey, since, user: bambooUrl }
 ) {
-  let spinner = ora().start("Initializing download");
+  let spinner = ora().start('Initializing download');
   const limit = pLimit(concurrency);
   let lastDownloaded = since;
   if (lastDownloaded == undefined) {
@@ -48,7 +47,7 @@ export default async function bambooBuilds(
   let startingBuild = lastDownloaded ? lastDownloaded + 1 : 1;
   let totalBuilds = await getTotalBuilds(bambooUrl, planKey, auth);
   let downloaded = startingBuild - 1;
-  spinner.text = "Starting download";
+  spinner.text = 'Starting download';
 
   let requestPromises = [];
   /**
@@ -79,9 +78,7 @@ export default async function bambooBuilds(
 
   await Promise.all(requestPromises);
 
-  spinner.succeed(
-    chalk`Download completed. Total Builds: {green ${totalBuilds}}`
-  );
+  spinner.succeed(chalk`Download completed. Total Builds: {green ${totalBuilds}}`);
   console.log(totalBuilds);
   spinner.stop();
   return;

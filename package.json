@@ -31,13 +31,12 @@
   "scripts": {
     "build": "rm -rf dist && tsc && chmod +x dist/cli.js",
     "dev": "ts-node ./cli.ts",
-    "format": "prettier --write \"{lib/**/*.{js, ts}, *.{js, ts}}\"",
+    "format": "prettier --write .",
     "prepublishOnly": "yarn build",
     "test": "jest",
     "typecheck": "tsc-files --noEmit"
   },
   "dependencies": {
-    "@types/jest": "^27.0.3",
     "chalk": "^4.1.2",
     "cli-table": "^0.3.1",
     "date-fns": "^1.29.0",
@@ -56,6 +55,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
+    "@types/jest": "^27.0.3",
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-typescript": "^7.16.0",
     "@types/inquirer": "^8.2.0",

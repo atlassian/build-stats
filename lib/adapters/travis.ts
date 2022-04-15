@@ -1,14 +1,14 @@
-import chalk from "chalk";
-import got from "got";
-import ora from "ora";
-import pLimit from "p-limit";
-import path from "path";
-import * as fs from "../utils/fs";
-import { getLastDownloadedBuildNumber } from "../utils/builds";
+import chalk from 'chalk';
+import got from 'got';
+import ora from 'ora';
+import pLimit from 'p-limit';
+import path from 'path';
+import * as fs from '../utils/fs';
+import { getLastDownloadedBuildNumber } from '../utils/builds';
 
 const RESULT_TO_STATUS = {
-  "0": "SUCCESSFUL",
-  "1": "FAILED",
+  '0': 'SUCCESSFUL',
+  '1': 'FAILED',
 };
 
 function toStandardBuildConfig(build) {
@@ -17,24 +17,17 @@ function toStandardBuildConfig(build) {
     uuid: build.id,
     createdOn: build.started_at,
     duration: build.duration,
-    result: RESULT_TO_STATUS[build.result] || "STOPPED",
+    result: RESULT_TO_STATUS[build.result] || 'STOPPED',
     refType: build.event_type,
     refName: build.branch,
   };
 }
 
 // Knowing which url to use can be a pain. It can change depending on a few things:
-function getTravisUrl(
-  user: string,
-  repo: string,
-  apiVersion: number,
-  auth: string
-) {
+function getTravisUrl(user: string, repo: string, apiVersion: number, auth: string) {
   // if looking for a public (open source) build, we use travis-ci.org
   // otherwise, we use travis-ci.com
-  let baseUrl = auth
-    ? "https://api.travis-ci.com"
-    : "https://api.travis-ci.org";
+  let baseUrl = auth ? 'https://api.travis-ci.com' : 'https://api.travis-ci.org';
   if (apiVersion === 3) {
     // v3 requires repo slug to be urlEncoded and uses 'repo' instead of 'repos'
     let repoSlug = encodeURIComponent(`${user}/${repo}`);
@@ -51,12 +44,12 @@ async function getTotalBuilds(user, repo, auth) {
   let url = getTravisUrl(user, repo, 3, auth);
   let res = await got(url, {
     headers: {
-      "Travis-API-Version": 3,
+      'Travis-API-Version': 3,
     },
   });
   let resJson = JSON.parse(res.body);
 
-  return resJson["@pagination"].count;
+  return resJson['@pagination'].count;
 }
 
 interface DownloadOptions {
@@ -74,19 +67,16 @@ export default async function fetchPipelines(
 ) {
   const pageLen = 25;
   const limit = pLimit(concurrency); // limits the number of concurrent requests
-  let lastDownloaded = since
-    ? since
-    : await getLastDownloadedBuildNumber(buildsDir);
+  let lastDownloaded = since ? since : await getLastDownloadedBuildNumber(buildsDir);
 
   let totalBuilds = await getTotalBuilds(user, repo, auth);
   // "pages" move backwards, so by starting at offset 26 for example, we'll get builds 1-25
-  let startingOffset =
-    Math.floor(lastDownloaded / pageLen) * pageLen + pageLen + 1;
+  let startingOffset = Math.floor(lastDownloaded / pageLen) * pageLen + pageLen + 1;
   let finalOffset = Math.floor(totalBuilds / pageLen) * pageLen + pageLen + 1;
 
   let downloaded = lastDownloaded;
   let requestPromises = [];
-  let spinner = ora().start("Starting download");
+  let spinner = ora().start('Starting download');
 
   for (let offset = startingOffset; offset <= finalOffset; offset += pageLen) {
     let request = limit(async () => {
@@ -117,7 +107,5 @@ export default async function fetchPipelines(
 
   await Promise.all(requestPromises);
 
-  spinner.succeed(
-    chalk`Download completed. Total Builds: {green ${totalBuilds}}`
-  );
+  spinner.succeed(chalk`Download completed. Total Builds: {green ${totalBuilds}}`);
 }
