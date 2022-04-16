@@ -4,6 +4,25 @@ import * as times from './times';
 
 const defaultBuildDir = path.join(__dirname, '../..');
 
+export async function getAllDownloadedSlugs(cwd = defaultBuildDir) {
+  let allDownloadedSlugs = [];
+  const pathToCache = path.join(cwd, '.data');
+
+  const allHosts = await fs.readDir(pathToCache);
+
+  await Promise.all(allHosts.map(async host => {
+    const allUsers = await fs.readDir(path.join(pathToCache, host));
+    await Promise.all(allUsers.map(async user => {
+      const allRepos = await fs.readDir(path.join(pathToCache, host, user));
+      allRepos.forEach(repo => {
+        allDownloadedSlugs.push(`${host}:${user}/${repo}`);
+      });
+    }))
+  }));
+
+  return allDownloadedSlugs;
+}
+
 export async function getBuildDir(cwd = defaultBuildDir, host, user, repo) {
   const buildsDir = path.join(cwd, '.data', host, user, repo, 'builds');
   await fs.mkdirp(buildsDir);
@@ -86,6 +105,7 @@ export async function getLastDownloadedBuildNumber(buildsDir) {
 }
 
 module.exports = {
+  getAllDownloadedSlugs,
   getBuildDir,
   getHistory,
   getLastDownloadedBuildNumber,
