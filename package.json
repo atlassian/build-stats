@@ -36,7 +36,7 @@
     "cli-table": "^0.3.1",
     "date-fns": "^1.29.0",
     "default-pager": "^1.1.0",
-    "got": "^8.0.1",
+    "got": "^11.8.5",
     "inquirer": "^8.2.0",
     "left-pad": "^1.2.0",
     "lodash.groupby": "^4.6.0",
