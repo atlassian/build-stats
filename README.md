@@ -26,13 +26,13 @@ Calculate monthly average build time and success rate of a repo over the last ye
 build-stats travis:boltpkg/bolt calculate
 ```
 
-Calculate daily average build time and success rate of a repo over the last month:
+Calculate the daily average build time and success rate of a repo over the last month:
 
 ```sh
 build-stats travis:boltpkg/bolt calculate --period 1 --last 30
 ```
 
-Calculate daily average build time and success rate of the master branch of a repo over the last 90 days:
+Calculate the daily average build time and success rate of the master branch of a repo over the last 90 days:
 
 ```sh
 $ build-stats travis:boltpkg/bolt calculate --branch master --period 1 --last 90
